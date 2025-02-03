@@ -36,8 +36,8 @@ const HistoryCard = React.memo(({
           <ThemedText type="subtitle">{name}</ThemedText>
         </View>
         <View style={[styles.appTextContainer]}>
-          <ThemedText>Distance: {distance} km</ThemedText>
-          <ThemedText>Time: {formatTime(time)}</ThemedText>
+          <ThemedText>📏 Distance: {distance} km</ThemedText>
+          <ThemedText>⏱ Time: {formatTime(time)}</ThemedText>
         </View>
       </View>
     </Link>

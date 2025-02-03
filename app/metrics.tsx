@@ -13,15 +13,18 @@ import { useRunIt } from '@/providers/History';
 const {height} = Dimensions.get('window');
 
 export default function Screen() {
+  const params = useLocalSearchParams();
+  const {pace, calories, distance, time, mode, name} = params;
+  
   const id = `${Date.now()}_run`
-  const name = exerciseIdToName(id);
+  const defaultName = exerciseIdToName(id);
+  const [runName, setRunName] = useState(name as string || defaultName);
   const [hasSaved, setHasSaved] = useState(false)
   const {saveExerciseResults} = useRunIt()
-  const [runTitle, setRunTitle] = useState(name);
+
   const textColor = useThemeColor({}, 'text');
   const tintColor = useThemeColor({}, 'tint');
-  const params = useLocalSearchParams();
-  const {pace, calories, distance, time, mode} = params;
+
 
   const metrics = [
     { label: 'Avg. Pace', value: pace },
@@ -32,7 +35,7 @@ export default function Screen() {
   const handleSave = async() => {
     await saveExerciseResults({
       id,
-      name,
+      name: runName,
       pace: parseFloat(pace as string), 
       calories: parseInt(calories as string),
       distance: parseFloat(distance as string),
@@ -46,8 +49,8 @@ export default function Screen() {
       <ThemedView style={styles.container}>
         <TextInput
           style={[styles.title, { color: textColor }]}
-          value={runTitle}
-          onChangeText={setRunTitle}
+          value={runName}
+          onChangeText={setRunName}
         />
         <Text style={[styles.distance, { color: tintColor }]}>{distance}</Text>
         <Text style={[styles.distanceLabel, { color: textColor }]}>Kilometres</Text>

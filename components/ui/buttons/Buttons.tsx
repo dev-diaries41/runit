@@ -4,6 +4,7 @@ import { themes, sizes } from '@/constants/layout';
 import { Ionicons } from '@expo/vector-icons';
 import { ButtonProps, GradientButtonProps, LinkButtonProps } from '@/types';
 import { Link } from 'expo-router';
+import { Colors } from '@/constants/Colors';
 
  export const GradientButton  = ({ 
   loading, 
@@ -108,7 +109,7 @@ import { Link } from 'expo-router';
   
   const styles = StyleSheet.create({
     button: {
-      backgroundColor: themes.dark.primary,
+      backgroundColor: Colors.dark.tint,
       width: 'auto',
       height: 'auto',
       borderRadius: sizes.layout.large,

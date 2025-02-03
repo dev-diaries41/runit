@@ -2,7 +2,7 @@
   "expo": {
     "name": "RunIt",
     "slug": "runit",
-    "version": "1.0.0",
+    "version": "1.0.8",
     "orientation": "portrait",
     "icon": "./assets/images/runit-icon.png",
     "scheme": "runit",
@@ -40,12 +40,6 @@
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
-        }
-      ],
-      [
-        "expo-location",
-        {
-          "locationAlwaysAndWhenInUsePermission": "Allow RunIt to use your location."
         }
       ],
       "expo-secure-store"

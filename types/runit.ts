@@ -1,13 +1,16 @@
 
 export interface Settings {
   weight: string;
-  systemPrompt: string;
 }
 
-
-export type Metrics = {
+export interface Metrics {
   pace: number;
   distance: number;
   calories: number;
   time: number;
+}
+
+export interface ExcerciseHistory extends Metrics {
+  id: string;
+  name: string;
 }

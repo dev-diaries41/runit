@@ -12,7 +12,6 @@ export const Time = {
 
 export const DefaultSettings: Settings = {
   weight: "",
-  systemPrompt: ''
 }
 
 

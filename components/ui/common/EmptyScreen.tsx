@@ -1,7 +1,9 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Dimensions } from 'react-native'
 import React from 'react'
 import { themes, sizes } from '@/constants/layout'
 import { Ionicons } from '@expo/vector-icons'
+
+const {height} = Dimensions.get('window')
 
 interface EmptyScreenProps {
     text?:string;
@@ -29,6 +31,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent:'center',
         alignItems:'center',
+        paddingTop: height/4
       },
     heading:{
         fontSize: sizes.font.xxLarge,

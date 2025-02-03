@@ -1,43 +1,43 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { themes, sizes } from '@/constants/layout';
-import IconButton from '../buttons/IconButton';
-import { App } from '@/types';
-import { useFridaPlay } from '@/Providers/FridaPlay';
+import { ExcerciseHistory } from '@/types';
 import { Link } from 'expo-router';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { Colors } from '@/constants/Colors';
 import { ThemedText } from '@/components/ui/common/ThemedText';
+import { formatTime } from '@/lib/runit';
 
 const { height } = Dimensions.get('screen');
 const ITEM_HEIGHT = height / 8 - (sizes.layout.medium);
 
-interface AppCardProps {
-  app: App
+interface HistoryCardProps {
+  result: ExcerciseHistory
   index: number
 }
-const AppCard = React.memo(({
-  app, 
+const HistoryCard = React.memo(({
+    result, 
   index, 
 
-}: AppCardProps) => {
-  const { name, description } = app
+}: HistoryCardProps) => {
+  const {name, pace, distance, time, calories } = result;
   const cardColor = useThemeColor({}, 'card') 
   const iconColor = useThemeColor({}, 'icon') 
 
   return (
-    <Link href={{pathname: '/(tabs)/(idea)/view', params: {name}}}>
+    <Link href={{pathname: '/metrics', params: {...result, mode: 'VIEW'}}}>
       <View  style={[styles.cardContainer, { backgroundColor:cardColor, borderColor: Colors.common.border}]}>
-        <View style={[styles.rowContainer, { justifyContent: 'space-between', marginLeft:'auto'}]}>
+        {/* <View style={[styles.rowContainer, { justifyContent: 'space-between', marginLeft:'auto'}]}>
           <View style={styles.navRowItems}>
             <IconButton iconSize={18} icon={"ellipsis-vertical"} onPress={()=>{}} color={iconColor}/>
           </View>
-        </View>
-        <View style={[styles.appTextContainer]}>
+        </View> */}
+        <View style={[styles.appTextContainer, {marginBottom: sizes.layout.small, opacity: 0.8}]}>
           <ThemedText type="subtitle">{name}</ThemedText>
         </View>
         <View style={[styles.appTextContainer]}>
-          <ThemedText>{description}</ThemedText>
+          <ThemedText>Distance: {distance} km</ThemedText>
+          <ThemedText>Time: {formatTime(time)}</ThemedText>
         </View>
       </View>
     </Link>
@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
   appTextContainer:{
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent:'space-between'
   },
   navRowItems:{
     flexDirection: 'row', 
@@ -81,4 +82,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default AppCard;
+export default HistoryCard;

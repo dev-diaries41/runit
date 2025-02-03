@@ -26,13 +26,7 @@ const settingsConfig = [
   {
     onPress: () => {},
     settingTitle: 'Backup',
-    settingDescription: 'Sync app ideas with obsidian or export JSON file',
-  },
-  {
-    settingTitle: 'System prompt',
-    settingDescription: 'Update the system prompt used to generates responses',
-    updateType: 'System prompt'
-
+    settingDescription: 'Backup your RunIt data',
   },
 ];
 

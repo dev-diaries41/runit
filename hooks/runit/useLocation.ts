@@ -1,54 +1,77 @@
 import { useEffect, useState, useRef } from "react";
-import * as Location from 'expo-location';
+import Geolocation, { GeoPosition, GeoError, GeoOptions, GeoWatchOptions } from "react-native-geolocation-service";
+import { PermissionsAndroid, Platform } from "react-native";
 
-type LocationData = {
-  distance: number;
+const geoWatchOptions: GeoWatchOptions = {
+  accuracy: {
+    android: 'high',
+  },
+  enableHighAccuracy: true,
+  distanceFilter: 10, // Location updates every 10 meters, suitable for jogging
+  interval: 10000, // Set a fixed interval of 10 seconds between updates (adjustable)
+  useSignificantChanges: false, // Use constant location updates to track every movement while jogging
+  showsBackgroundLocationIndicator: true, // Display a background indicator for transparency
 };
 
-export function useLocation(): LocationData {
+
+export function useLocation() {
   const [distance, setDistance] = useState<number>(0);
-  const prevLocationRef = useRef<Location.LocationObject | null>(null);
+  const prevLocationRef = useRef<GeoPosition | null>(null);
 
   useEffect(() => {
-    let locationSubscription: Location.LocationSubscription | undefined;
+    let watchId: number | null = null;
 
     const startLocationTracking = async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        console.error('Location permission not granted');
+      const hasPermission = await requestLocationPermission();
+      if (!hasPermission) {
+        console.error("Location permission not granted");
         return;
       }
 
-      locationSubscription = await Location.watchPositionAsync(
-        {
-          accuracy: Location.Accuracy.Highest,
-          timeInterval: 1000,
-          distanceInterval: 1,
-        },
-        (location: Location.LocationObject) => {
+      // Start watching position changes
+      watchId = Geolocation.watchPosition(
+        (position: GeoPosition) => {
           if (prevLocationRef.current) {
             const newDistance = calculateDistance(
               prevLocationRef.current.coords.latitude,
               prevLocationRef.current.coords.longitude,
-              location.coords.latitude,
-              location.coords.longitude
+              position.coords.latitude,
+              position.coords.longitude
             );
             setDistance((prev) => prev + newDistance);
-          }
-          // Update the ref with the current location
-          prevLocationRef.current = location;
-        }
+            console.info("New distance: ", newDistance);
+          } 
+          prevLocationRef.current = position; // Update the reference with the current position
+        },
+        (error: GeoError) => {
+          console.error("Error watching location:", error);
+        },
+        geoWatchOptions
       );
     };
 
     startLocationTracking();
 
     return () => {
-      if (locationSubscription) {
-        locationSubscription.remove();
+      if (watchId !== null) {
+        Geolocation.clearWatch(watchId);
       }
     };
   }, []);
+
+  const requestLocationPermission = async (): Promise<boolean> => {
+    if (Platform.OS === "android") {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+      );
+      return granted === PermissionsAndroid.RESULTS.GRANTED;
+    }
+    if (Platform.OS === "ios") {
+      // For iOS, permissions are handled automatically by Geolocation
+      return true;
+    }
+    return false;
+  };
 
   const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
     const toRad = (value: number): number => (value * Math.PI) / 180;

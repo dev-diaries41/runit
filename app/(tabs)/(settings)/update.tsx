@@ -3,13 +3,11 @@ import ParallaxScrollView from '@/components/ui/common/ParallaxScrollView';
 import { IconSymbol } from '@/components/ui/common/IconSymbol';
 import { useLocalSearchParams } from 'expo-router';
 import WeightSettings from '@/components/ui/settings/Weight';
-import SystemPropmptSettings from '@/components/ui/settings/SystemPrompt';
 
- 
+
 export default function UpdateSettingsScreen() {
   const { updateType } = useLocalSearchParams();
   const isWeightSettings = updateType === "Weight";
-  const isSystemPromptSettings = updateType === "System prompt";
 
   return (
     <ParallaxScrollView
@@ -24,7 +22,6 @@ export default function UpdateSettingsScreen() {
       }>
        
       {isWeightSettings && <WeightSettings/>}
-      {isSystemPromptSettings && <SystemPropmptSettings/>}
     </ParallaxScrollView>
   );
 }

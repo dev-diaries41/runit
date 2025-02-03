@@ -170,3 +170,15 @@ export const decrypt = async(key: string, encryptedString: string) => {
   }
   return null;
 }
+
+
+export const fetchAsyncStorageBatch = async <T = any>(batchSize: number, filterConditon?: (key: string) => boolean) => {
+  const allKeys = await AsyncStorage.getAllKeys();
+  const runKeys = filterConditon? allKeys.filter(filterConditon): allKeys;
+  const newBatchKeys = runKeys.slice(0, batchSize);
+  const retrievedItems: T[] = ( await AsyncStorage.multiGet(newBatchKeys))
+    .map(([key, value]) => ({ id: key, name: key, ...JSON.parse(value ?? '{}') }))
+    .filter(item => Object.keys(item).length !== 0);
+    
+  return {retrievedItems, batchKeysLength: newBatchKeys.length}
+};

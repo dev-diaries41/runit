@@ -1,9 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { sizes, themes } from '@/constants/layout';
+import { StyleSheet, View, TouchableOpacity, Dimensions } from 'react-native';
+import { sizes } from '@/constants/layout';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { Button } from '../buttons/Buttons';
 import { formatTime } from '@/lib/runit';
+import { ThemedText } from '../common/ThemedText';
 
 interface StopwatchProps {
   elapsedTime: number;
@@ -13,13 +14,16 @@ interface StopwatchProps {
   reset: () => void;
 }
 
+const {width} = Dimensions.get('window')
+const CIRCLE_SIZE = width * 0.7
+
 const Stopwatch: React.FC<StopwatchProps> = ({ elapsedTime, isRunning, start, stop, reset }) => {
   const textColor = useThemeColor({}, 'text');
 
   return (
     <View style={styles.container}>
       <View style={[styles.timerContainer, {borderColor: textColor}]}>
-        <Text style={styles.timer}>{formatTime(elapsedTime)}</Text>
+        <ThemedText style={styles.timer}>{formatTime(elapsedTime)}</ThemedText>
       </View>
       <View style={styles.buttons}>
         <Button 
@@ -29,7 +33,7 @@ const Stopwatch: React.FC<StopwatchProps> = ({ elapsedTime, isRunning, start, st
         onPress={isRunning? stop:start}
         />
        {(isRunning || elapsedTime > 0) && <TouchableOpacity style={styles.button} onPress={reset}>
-          <Text style={styles.buttonText}>Reset</Text>
+          <ThemedText style={styles.buttonText}>Reset</ThemedText>
         </TouchableOpacity>}
       </View>
     </View>
@@ -43,34 +47,34 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: sizes.layout.medium,
+    gap: sizes.layout.medium
   },
   timerContainer: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
-    borderWidth: 2,
+    width: CIRCLE_SIZE ,
+    height: CIRCLE_SIZE,
+    borderRadius: CIRCLE_SIZE/2,
+    borderWidth: 3,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: sizes.layout.medium,
   },
   timer: {
-    fontSize: sizes.font.xLarge,
-    color: 'white',
+    fontSize: sizes.font.xxLarge * 1.5,
     textAlign: 'center',
     fontWeight: 'bold',
+    padding: sizes.layout.medium
   },
   buttons: {
     flexDirection: 'column',
     gap: sizes.layout.medium,
     alignItems:'center',
-    marginTop:32  
+    // marginTop:32  
   },
   button: {
     padding: sizes.layout.small,
     borderRadius: sizes.layout.small,
   },
   buttonText: {
-    color: 'white',
-    fontSize: sizes.font.small,
+    fontSize: sizes.font.medium,
   },
 });

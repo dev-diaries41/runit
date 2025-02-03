@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, Alert } from 'react-native';
 import ParallaxScrollView from '@/components/ui/common/ParallaxScrollView';
 import Stopwatch from '@/components/ui/utilities/Stopwatch';
 import { ThemedView } from '@/components/ui/common/ThemedView';
@@ -11,11 +11,12 @@ import { useRouter } from 'expo-router';
 import { useLocation } from '@/hooks/runit/useLocation';
 import { calculateAvgPace, calculateCalories } from '@/lib/runit';
 import { Metrics } from '@/types';
+import { useSettings } from '@/providers/Settings';
 
-const {height, width} = Dimensions.get('window');
-
+const {height} = Dimensions.get('window');
 
 export default function Screen() {
+  const {settings} = useSettings()
   const { elapsedTime, isRunning, start, stop, reset } = useStopwatch();
   const {distance} = useLocation();
   const [metrics, setMetrics] = useState<Metrics|null>(null)
@@ -30,7 +31,12 @@ export default function Screen() {
 
   const handleStopRun = async() => {
     await stop()
-    const calories = calculateCalories(80, distance);
+    const weight = parseInt(settings.weight);
+    if(isNaN(weight)){
+      Alert.alert("Missing weight", "Add your weight in settings");
+      return;
+    }
+    const calories = calculateCalories(weight, distance);
     const pace = calculateAvgPace(distance, elapsedTime);
     setMetrics({calories, pace, distance, time: elapsedTime});
   }
@@ -55,7 +61,7 @@ export default function Screen() {
       </ThemedView>
       {metrics && <Button
       style={{width: "50%"}}
-      onPress={()=>router.push({pathname: '/metrics', params: metrics})} 
+      onPress={()=>router.push({pathname: '/metrics', params: {...metrics}})} 
       text='View metrics'/>}
     </ParallaxScrollView>
   );
@@ -67,8 +73,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: sizes.layout.medium,
-    height: height - 120,
-    gap: sizes.layout.medium
+    gap: sizes.layout.medium,
+    paddingTop: height/6
   },
   title: {
     fontSize: sizes.font.xxLarge,

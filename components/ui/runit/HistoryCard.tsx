@@ -66,7 +66,8 @@ const styles = StyleSheet.create({
   appTextContainer:{
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent:'space-between'
+    justifyContent:'space-between',
+    paddingVertical: sizes.layout.xSmall
   },
   navRowItems:{
     flexDirection: 'row', 

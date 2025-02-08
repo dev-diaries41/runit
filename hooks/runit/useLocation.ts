@@ -38,8 +38,7 @@ export function useLocation() {
               position.coords.latitude,
               position.coords.longitude
             );
-            setDistance((prev) => prev + newDistance);
-            console.info("New distance: ", newDistance);
+            setDistance((prev) => parseFloat((prev + newDistance).toFixed(2)));
           } 
           prevLocationRef.current = position; // Update the reference with the current position
         },

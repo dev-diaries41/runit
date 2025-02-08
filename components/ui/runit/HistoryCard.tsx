@@ -6,7 +6,7 @@ import { Link } from 'expo-router';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { Colors } from '@/constants/Colors';
 import { ThemedText } from '@/components/ui/common/ThemedText';
-import { formatTime } from '@/lib/runit';
+import { formatTime } from '@/lib/helpers';
 
 const { height } = Dimensions.get('screen');
 const ITEM_HEIGHT = height / 8 - (sizes.layout.medium);
@@ -36,7 +36,7 @@ const HistoryCard = React.memo(({
           <ThemedText type="subtitle">{name}</ThemedText>
         </View>
         <View style={[styles.appTextContainer]}>
-          <ThemedText>📏 Distance: {distance} km</ThemedText>
+          <ThemedText>📏 Distance: {distance.toFixed(2)} km</ThemedText>
           <ThemedText>⏱ Time: {formatTime(time)}</ThemedText>
         </View>
       </View>

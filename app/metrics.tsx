@@ -5,7 +5,7 @@ import ParallaxScrollView from '@/components/ui/common/ParallaxScrollView';
 import { ThemedView } from '@/components/ui/common/ThemedView';
 import { sizes } from '@/constants/layout';
 import { useLocalSearchParams } from 'expo-router';
-import { exerciseIdToName, formatTime } from '@/lib/runit';
+import { formatTime } from '@/lib/helpers';
 import Spacer from '@/components/ui/utilities/Spacer';
 import { Button } from '@/components/ui/buttons/Buttons';
 import { useRunIt } from '@/providers/History';
@@ -16,8 +16,15 @@ export default function Screen() {
   const params = useLocalSearchParams();
   const {pace, calories, distance, time, mode, name} = params;
   
-  const id = `${Date.now()}_run`
+  const  exerciseIdToName = (id: string): string => {
+    const timestamp = parseInt(id.split('_')[0]);
+    const date = new Date(timestamp);
+    return `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getFullYear())} Run`;  
+  }
+
+  const id = `${Date.now()}_run`;
   const defaultName = exerciseIdToName(id);
+
   const [runName, setRunName] = useState(name as string || defaultName);
   const [hasSaved, setHasSaved] = useState(false)
   const {saveExerciseResults} = useRunIt()

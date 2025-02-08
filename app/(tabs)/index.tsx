@@ -9,42 +9,34 @@ import { ThemedText } from '@/components/ui/common/ThemedText';
 import { Button } from '@/components/ui/buttons/Buttons';
 import { useRouter } from 'expo-router';
 import { useLocation } from '@/hooks/runit/useLocation';
-import { calculateAvgPace, calculateCalories } from '@/lib/runit';
-import { Metrics } from '@/types';
-import { useSettings } from '@/providers/Settings';
+import { useMetrics } from '@/hooks/runit/useMetrics';
 
 const {height} = Dimensions.get('window');
 
 export default function Screen() {
-  const {settings} = useSettings()
   const { elapsedTime, isRunning, start, stop, reset } = useStopwatch();
   const {distance} = useLocation();
-  const [metrics, setMetrics] = useState<Metrics|null>(null)
+  const { metrics, computeMetrics, resetMetrics } = useMetrics(distance, elapsedTime);
   const router = useRouter();
 
   const handleStartRun = async() => {
     await start()
     if(metrics){
-      setMetrics(null);
+      resetMetrics();
     }
   }
 
-  const handleStopRun = async() => {
-    await stop()
-    const weight = parseInt(settings.weight);
-    if(isNaN(weight)){
-      Alert.alert("Missing weight", "Add your weight in settings");
-      return;
-    }
-    const calories = calculateCalories(weight, distance);
-    const pace = calculateAvgPace(distance, elapsedTime);
-    setMetrics({calories, pace, distance, time: elapsedTime});
-  }
 
-  const handleReset = async() => {
-    await reset();
-    setMetrics(null);
-  }
+const handleStopRun = async () => {
+  await stop();
+  computeMetrics();
+};
+
+const handleReset = async () => {
+  await reset();
+  resetMetrics();
+};
+
   
   return (
     <ParallaxScrollView headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}>

@@ -3,7 +3,7 @@ import { StyleSheet, View, TouchableOpacity, Dimensions } from 'react-native';
 import { sizes } from '@/constants/layout';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { Button } from '../buttons/Buttons';
-import { formatTime } from '@/lib/runit';
+import { formatTime } from '@/lib/helpers';
 import { ThemedText } from '../common/ThemedText';
 
 interface StopwatchProps {

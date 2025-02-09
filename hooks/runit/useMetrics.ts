@@ -8,28 +8,28 @@ export function useMetrics(distance: number, elapsedTime: number) {
   const { settings } = useSettings();
   const [metrics, setMetrics] = useState<Metrics | null>(null);
   const [metricsTimeSeries, setMetricsTimeSeries] = useState<Metrics[]>([]);
-  const monitorInterval = 10 * Time.sec;
+  const monitorInterval = 30 * Time.sec;
 
-  useEffect(() => {
-    const monitorMetrics = () => {
-      try {
-        const newMetrics = getMetrics(distance, elapsedTime);  
-        setMetrics(newMetrics);
-        setMetricsTimeSeries(prev => {
-          const updatedSeries = [...prev, newMetrics];
-          return updatedSeries.length > 120 ? updatedSeries.slice(1) : updatedSeries; // track most recent hour
-        });
-      } catch (error) {
-        onMetricsError(error);
-      }
-    };
+  // useEffect(() => {
+  //   const monitorMetrics = () => {
+  //     try {
+  //       const newMetrics = getMetrics(distance, elapsedTime);  
+  //       setMetrics(newMetrics);
+  //       setMetricsTimeSeries(prev => {
+  //         const updatedSeries = [...prev, newMetrics];
+  //         return updatedSeries.length > 120 ? updatedSeries.slice(1) : updatedSeries; // track most recent hour
+  //       });
+  //     } catch (error) {
+  //       onMetricsError(error);
+  //     }
+  //   };
   
-    const shouldMonitor = !isNaN(parseInt(settings.weight)) && elapsedTime > 0 && Math.round(elapsedTime) % monitorInterval === 0;
+  //   const shouldMonitor = !isNaN(parseInt(settings.weight)) && elapsedTime > 0 && Math.round(elapsedTime) % monitorInterval === 0;
     
-    if (shouldMonitor) {
-      monitorMetrics();
-    }
-  }, [Math.floor(elapsedTime / monitorInterval), distance]); 
+  //   if (shouldMonitor) {
+  //     monitorMetrics();
+  //   }
+  // }, [Math.floor(elapsedTime / monitorInterval), distance]); 
   
 
   const getMetrics = (distance: number, elapsedTime: number): Metrics => {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Dimensions, Alert } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import ParallaxScrollView from '@/components/ui/common/ParallaxScrollView';
 import Stopwatch from '@/components/ui/utilities/Stopwatch';
 import { ThemedView } from '@/components/ui/common/ThemedView';
@@ -17,7 +17,7 @@ const {height} = Dimensions.get('window');
 export default function Screen() {
   const { elapsedTime, isRunning, start, stop, reset } = useStopwatch();
   const {distance} = useLocation();
-  const { metrics, metricsTimeSeries, getCurrentMetrics, resetMetrics } = useMetrics(distance, elapsedTime);
+  const { metrics, getCurrentMetrics, resetMetrics } = useMetrics(distance, elapsedTime);
   const router = useRouter();
   const tintColor = useThemeColor({}, 'tint');
 
@@ -54,12 +54,12 @@ const handleReset = async () => {
         />
       </ThemedView>
       <ThemedView style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-      {metricsTimeSeries.length > 0 && (
+      {/* {metricsTimeSeries.length > 0 && (
         <Button
           style={{width: "50%", borderColor: tintColor}}
           onPress={()=> {alert("Viewing graph: " + JSON.stringify(metricsTimeSeries))}} 
           text='View graph'/>
-      )}
+      )} */}
         {metrics && (
         <Button
           style={{width: "50%"}}

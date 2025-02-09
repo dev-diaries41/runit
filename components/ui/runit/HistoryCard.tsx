@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
     flexDirection:'column',
     minHeight: ITEM_HEIGHT,
     padding: sizes.layout.medium,
+    marginBottom: sizes.layout.small,
     borderRadius: sizes.layout.medium,
     borderBottomColor: themes.borderColor,
   },
@@ -67,7 +68,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent:'space-between',
-    paddingVertical: sizes.layout.xSmall
+    gap: sizes.layout.xSmall,
+    padding: sizes.layout.xSmall
   },
   navRowItems:{
     flexDirection: 'row', 

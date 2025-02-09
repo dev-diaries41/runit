@@ -26,7 +26,7 @@ export default function Screen() {
   const defaultName = exerciseIdToName(id);
 
   const [runName, setRunName] = useState(name as string || defaultName);
-  const [hasSaved, setHasSaved] = useState(false)
+  const [hasSaved, setHasSaved] = useState(false);
   const {saveExerciseResults} = useRunIt()
 
   const textColor = useThemeColor({}, 'text');
@@ -34,7 +34,7 @@ export default function Screen() {
 
 
   const metrics = [
-    { label: 'Avg. Pace', value: pace },
+    { label: 'Avg. Pace', value: parseFloat(pace as string).toFixed(2) },
     { label: 'Time', value: formatTime(parseInt(time as string)) },
     { label: 'Calories', value: calories },
   ];
@@ -59,7 +59,7 @@ export default function Screen() {
           value={runName}
           onChangeText={setRunName}
         />
-        <Text style={[styles.distance, { color: tintColor }]}>{distance}</Text>
+        <Text style={[styles.distance, { color: tintColor }]}>{parseFloat(distance as string).toFixed(2)}</Text>
         <Text style={[styles.distanceLabel, { color: textColor }]}>Kilometres</Text>
         <Spacer/>
         <View style={styles.metricsContainer}>

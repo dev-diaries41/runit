@@ -10,14 +10,16 @@ import { Button } from '@/components/ui/buttons/Buttons';
 import { useRouter } from 'expo-router';
 import { useLocation } from '@/hooks/runit/useLocation';
 import { useMetrics } from '@/hooks/runit/useMetrics';
+import { useThemeColor } from '@/hooks/useThemeColor';
 
 const {height} = Dimensions.get('window');
 
 export default function Screen() {
   const { elapsedTime, isRunning, start, stop, reset } = useStopwatch();
   const {distance} = useLocation();
-  const { metrics, computeMetrics, resetMetrics } = useMetrics(distance, elapsedTime);
+  const { metrics, metricsTimeSeries, getCurrentMetrics, resetMetrics } = useMetrics(distance, elapsedTime);
   const router = useRouter();
+  const tintColor = useThemeColor({}, 'tint');
 
   const handleStartRun = async() => {
     await start()
@@ -29,7 +31,7 @@ export default function Screen() {
 
 const handleStopRun = async () => {
   await stop();
-  computeMetrics();
+  getCurrentMetrics();
 };
 
 const handleReset = async () => {
@@ -51,10 +53,21 @@ const handleReset = async () => {
           reset={handleReset}
         />
       </ThemedView>
-      {metrics && <Button
-      style={{width: "50%"}}
-      onPress={()=>router.push({pathname: '/metrics', params: {...metrics}})} 
-      text='View metrics'/>}
+      <ThemedView style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+      {metricsTimeSeries.length > 0 && (
+        <Button
+          style={{width: "50%", borderColor: tintColor}}
+          onPress={()=> {alert("Viewing graph: " + JSON.stringify(metricsTimeSeries))}} 
+          text='View graph'/>
+      )}
+        {metrics && (
+        <Button
+          style={{width: "50%"}}
+          onPress={()=>router.push({pathname: '/metrics', params: {...metrics}})} 
+          text='View metrics'/>
+      )}
+      </ThemedView>
+    
     </ParallaxScrollView>
   );
 }

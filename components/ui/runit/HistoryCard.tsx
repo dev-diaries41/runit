@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import { themes, sizes } from '@/constants/layout';
 import { ExcerciseHistory } from '@/types';
 import { Link } from 'expo-router';
@@ -20,12 +20,12 @@ const HistoryCard = React.memo(({
   index, 
 
 }: HistoryCardProps) => {
-  const {name, pace, distance, time, calories } = result;
+  const {name, distance, time } = result;
   const cardColor = useThemeColor({}, 'card') 
   const iconColor = useThemeColor({}, 'icon') 
 
   return (
-    <Link href={{pathname: '/metrics', params: {...result, mode: 'VIEW'}}}>
+    <Link style ={{marginBottom: sizes.layout.small}} href={{pathname: '/metrics', params: {...result, mode: 'VIEW'}}}>
       <View  style={[styles.cardContainer, { backgroundColor:cardColor, borderColor: Colors.common.border}]}>
         {/* <View style={[styles.rowContainer, { justifyContent: 'space-between', marginLeft:'auto'}]}>
           <View style={styles.navRowItems}>
@@ -50,7 +50,6 @@ const styles = StyleSheet.create({
     flexDirection:'column',
     minHeight: ITEM_HEIGHT,
     padding: sizes.layout.medium,
-    marginBottom: sizes.layout.small,
     borderRadius: sizes.layout.medium,
     borderBottomColor: themes.borderColor,
   },

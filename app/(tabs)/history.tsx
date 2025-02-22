@@ -73,27 +73,29 @@ export default function Screen({}) {
   }
 
   return (
-    <ParallaxScrollView
-    headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}>  
-    <ThemedView style={styles.container}>
-        <View style={styles.searchBar}>
-            <Search
-            query={query}
-            onSearch={handleSearch}
-            onCancel={handleCancel}
-            color={color}
-            placeholder='Search exercise history...'
-            />
-        </View>
-        <List
-        items={exerciseHistory}
-        searchResults={searchResults}
+    <ThemedView style={{flex:1}}>
+      <View style={styles.searchBar}>
+        <Search
         query={query}
-        loadMoreItems={loadMoreItems}
-        renderItem={renderItem}
+        onSearch={handleSearch}
+        onCancel={handleCancel}
+        color={color}
+        placeholder='Search exercise history...'
         />
-      </ThemedView>   
-    </ParallaxScrollView>
+      </View>
+      <ParallaxScrollView
+      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}>  
+      <ThemedView style={styles.container}>
+          <List
+          items={exerciseHistory}
+          searchResults={searchResults}
+          query={query}
+          loadMoreItems={loadMoreItems}
+          renderItem={renderItem}
+          />
+        </ThemedView>   
+      </ParallaxScrollView>
+    </ThemedView>
   );
   
 };
@@ -107,7 +109,7 @@ const styles = StyleSheet.create({
 
   container: {
     flex: 1,
-    paddingTop: StatusBar.currentHeight? StatusBar.currentHeight * 2 : sizes.layout.xxLarge,
+    paddingTop: sizes.layout.small,
     gap: 16
   },
 
@@ -123,7 +125,8 @@ const styles = StyleSheet.create({
   searchBar:{
     flex:0.1,
     alignItems:'center',
-    marginVertical: sizes.layout.medium,
-    zIndex:10
+    marginVertical: sizes.layout.small,
+    paddingHorizontal: sizes.layout.medium,
+    marginTop: StatusBar.currentHeight? StatusBar.currentHeight * 3: 0
   }
 });

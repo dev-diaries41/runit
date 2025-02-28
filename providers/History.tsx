@@ -49,12 +49,6 @@ const useRunIt = () => {
     }
   }
 
-  const  exerciseIdToName = (id: string): string => {
-    const timestamp = parseInt(id.split('_')[0]);
-    const date = new Date(timestamp);
-    return `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getFullYear())} Run`;  
-  }
-
   const viewRunSession = (appToView: RunSession) => {
     setSelectedRunSession(appToView)
   }

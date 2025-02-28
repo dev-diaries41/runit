@@ -45,10 +45,15 @@ const useRunIt = () => {
         setRunHistory(prev => [...prev, result])
         await AsyncStorage.setItem(result.id, JSON.stringify(result));     
     } catch (error) {
-      console.error('Error saving exercise metrics');
+      console.error('Error saving run session');
     }
   }
 
+  const  exerciseIdToName = (id: string): string => {
+    const timestamp = parseInt(id.split('_')[0]);
+    const date = new Date(timestamp);
+    return `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getFullYear())} Run`;  
+  }
 
   const viewRunSession = (appToView: RunSession) => {
     setSelectedRunSession(appToView)

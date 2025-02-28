@@ -18,11 +18,10 @@ export default function Screen() {
   
   const [runName, setRunName] = useState(name as string);
   const [hasSaved, setHasSaved] = useState(false);
-  const {saveExerciseResults} = useRunIt()
+  const {saveRunSession} = useRunIt()
 
   const textColor = useThemeColor({}, 'text');
   const tintColor = useThemeColor({}, 'tint');
-
 
   const metrics = [
     { label: 'Avg. Pace', value: parseFloat(pace as string).toFixed(2) },
@@ -31,7 +30,7 @@ export default function Screen() {
   ];
 
   const handleSave = async() => {
-    await saveExerciseResults({
+    await saveRunSession({
       id: id as string,
       name: runName,
       pace: parseFloat(pace as string), 
@@ -62,11 +61,13 @@ export default function Screen() {
           ))}
         </View>
       </ThemedView>
-      {mode !== "VIEW" && <Button
-      disabled={hasSaved}
-      style={{width: "50%", marginTop: height * 0.1}}
-      onPress={handleSave} 
-      text='Save metrics'/>}
+      {mode !== "VIEW" && ( 
+        <Button
+          disabled={hasSaved}
+          style={{width: "50%", marginTop: height * 0.1}}
+          onPress={handleSave} 
+          text='Save metrics'/>
+      )}
     </ParallaxScrollView>
   );
 }

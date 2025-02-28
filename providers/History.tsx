@@ -3,10 +3,10 @@ import { RunSession } from '@/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export interface RunItContextProps {
-  selectedExceriseResults: RunSession | null;
-  setSelectedExceriseResults: React.Dispatch<React.SetStateAction< RunSession | null>>; 
-  exerciseHistory: RunSession[];
-  setExerciseHistory: React.Dispatch<React.SetStateAction< RunSession[]>>; 
+  selectedRunSession: RunSession | null;
+  setSelectedRunSession: React.Dispatch<React.SetStateAction< RunSession | null>>; 
+  runHistory: RunSession[];
+  setRunHistory: React.Dispatch<React.SetStateAction< RunSession[]>>; 
 }
 
 const RunItContext = createContext<RunItContextProps | undefined>(undefined);
@@ -17,15 +17,15 @@ interface RunItProviderProps {
 }
 
 const RunItProvider = ({ children, storedExcerciseHistory }: RunItProviderProps) => {
-  const [selectedExceriseResults, setSelectedExceriseResults] = useState<RunSession | null>(null);
-  const [exerciseHistory, setExerciseHistory] = useState<RunSession[]>(storedExcerciseHistory);
+  const [selectedRunSession, setSelectedRunSession] = useState<RunSession | null>(null);
+  const [runHistory, setRunHistory] = useState<RunSession[]>(storedExcerciseHistory);
 
   return (
     <RunItContext.Provider value={{
-      selectedExceriseResults, 
-      setSelectedExceriseResults,
-      exerciseHistory, 
-      setExerciseHistory,
+      selectedRunSession, 
+      setSelectedRunSession,
+      runHistory, 
+      setRunHistory,
     }}>
       {children}
     </RunItContext.Provider>
@@ -37,12 +37,12 @@ const useRunIt = () => {
   if (!context) {
     throw new Error('useRunIt must be used within a RunItProvider');
   }
-  const {selectedExceriseResults, setSelectedExceriseResults, exerciseHistory, setExerciseHistory} = context;
+  const {selectedRunSession, setSelectedRunSession, runHistory, setRunHistory} = context;
 
 
-  const saveExerciseResults = async(result: RunSession) => {
+  const saveRunSession = async(result: RunSession) => {
     try {
-        setExerciseHistory(prev => [...prev, result])
+        setRunHistory(prev => [...prev, result])
         await AsyncStorage.setItem(result.id, JSON.stringify(result));     
     } catch (error) {
       console.error('Error saving exercise metrics');
@@ -50,16 +50,16 @@ const useRunIt = () => {
   }
 
 
-  const viewExceriseResults = (appToView: RunSession) => {
-    setSelectedExceriseResults(appToView)
+  const viewRunSession = (appToView: RunSession) => {
+    setSelectedRunSession(appToView)
   }
 
   return {
-    selectedExceriseResults,
-    exerciseHistory,
-    saveExerciseResults,
-    setExerciseHistory,
-    viewExceriseResults
+    selectedRunSession,
+    runHistory,
+    saveRunSession,
+    setRunHistory,
+    viewRunSession
   };
 };
 

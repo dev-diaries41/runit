@@ -15,7 +15,7 @@ import { ThemedView } from '@/components/ui/common/ThemedView';
 
 
 export default function Screen({}) {
-  const {exerciseHistory, setExerciseHistory} = useRunIt();
+  const {runHistory, setRunHistory} = useRunIt();
   const [loadedAllItems, setLoadedItems] = useState(false);
   const {setQuery, query, searchResults, setSearchResults} = useSearch();
   const color = useThemeColor({}, 'text');
@@ -25,9 +25,9 @@ export default function Screen({}) {
   const loadMoreItems = async () => {
     if(loadedAllItems)return;
     try {
-      const existingKeys = new Set(exerciseHistory.map(item => item.id));
+      const existingKeys = new Set(runHistory.map(item => item.id));
       const {retrievedItems, batchKeysLength} = await fetchAsyncStorageBatch<RunSession>(BATCH_SIZE, key => key.includes("run") && !existingKeys.has(key))
-      setExerciseHistory(prevHistory => [...prevHistory, ...retrievedItems]);
+      setRunHistory(prevHistory => [...prevHistory, ...retrievedItems]);
   
       if (batchKeysLength < BATCH_SIZE) {
         setLoadedItems(true);
@@ -41,7 +41,7 @@ export default function Screen({}) {
   const handleSearch = (query: string) => {
     try {
       setQuery(query)
-      const filteredNotes = exerciseHistory.filter((exerciseResult: RunSession) =>
+      const filteredNotes = runHistory.filter((exerciseResult: RunSession) =>
         exerciseResult.name.toLowerCase().includes(query.toLowerCase())
       );
       setSearchResults(filteredNotes);
@@ -61,7 +61,7 @@ export default function Screen({}) {
   )};
 
   
-  if(exerciseHistory.length === 0){
+  if(runHistory.length === 0){
     return(
         <ParallaxScrollView
         headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}>         
@@ -87,7 +87,7 @@ export default function Screen({}) {
       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}>  
       <ThemedView style={styles.container}>
           <List
-          items={exerciseHistory}
+          items={runHistory}
           searchResults={searchResults}
           query={query}
           loadMoreItems={loadMoreItems}

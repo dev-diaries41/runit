@@ -8,7 +8,7 @@ import useSearch from '@/hooks/useSearch';
 import EmptyScreen from '@/components/ui/common/EmptyScreen';
 import List from '@/components/ui/common/Lists';
 import { useRunIt } from '@/providers/History';
-import { ExcerciseHistory } from '@/types';
+import { RunSession } from '@/types';
 import HistoryCard from '@/components/ui/runit/HistoryCard';
 import { fetchAsyncStorageBatch } from '@/lib/storage';
 import { ThemedView } from '@/components/ui/common/ThemedView';
@@ -26,7 +26,7 @@ export default function Screen({}) {
     if(loadedAllItems)return;
     try {
       const existingKeys = new Set(exerciseHistory.map(item => item.id));
-      const {retrievedItems, batchKeysLength} = await fetchAsyncStorageBatch<ExcerciseHistory>(BATCH_SIZE, key => key.includes("run") && !existingKeys.has(key))
+      const {retrievedItems, batchKeysLength} = await fetchAsyncStorageBatch<RunSession>(BATCH_SIZE, key => key.includes("run") && !existingKeys.has(key))
       setExerciseHistory(prevHistory => [...prevHistory, ...retrievedItems]);
   
       if (batchKeysLength < BATCH_SIZE) {
@@ -41,7 +41,7 @@ export default function Screen({}) {
   const handleSearch = (query: string) => {
     try {
       setQuery(query)
-      const filteredNotes = exerciseHistory.filter((exerciseResult: ExcerciseHistory) =>
+      const filteredNotes = exerciseHistory.filter((exerciseResult: RunSession) =>
         exerciseResult.name.toLowerCase().includes(query.toLowerCase())
       );
       setSearchResults(filteredNotes);

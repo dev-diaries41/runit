@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import { themes, sizes } from '@/constants/layout';
-import { ExcerciseHistory } from '@/types';
+import { RunSession } from '@/types';
 import { Link } from 'expo-router';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { Colors } from '@/constants/Colors';
@@ -12,7 +12,7 @@ const { height } = Dimensions.get('screen');
 const ITEM_HEIGHT = height / 8 - (sizes.layout.medium);
 
 interface HistoryCardProps {
-  result: ExcerciseHistory
+  result: RunSession
   index: number
 }
 const HistoryCard = React.memo(({

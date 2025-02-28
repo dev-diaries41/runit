@@ -14,18 +14,9 @@ const {height} = Dimensions.get('window');
 
 export default function Screen() {
   const params = useLocalSearchParams();
-  const {pace, calories, distance, time, mode, name} = params;
+  const {pace, calories, distance, time, mode, name, id} = params;
   
-  const  exerciseIdToName = (id: string): string => {
-    const timestamp = parseInt(id.split('_')[0]);
-    const date = new Date(timestamp);
-    return `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getFullYear())} Run`;  
-  }
-
-  const id = `${Date.now()}_run`;
-  const defaultName = exerciseIdToName(id);
-
-  const [runName, setRunName] = useState(name as string || defaultName);
+  const [runName, setRunName] = useState(name as string);
   const [hasSaved, setHasSaved] = useState(false);
   const {saveExerciseResults} = useRunIt()
 
@@ -41,7 +32,7 @@ export default function Screen() {
 
   const handleSave = async() => {
     await saveExerciseResults({
-      id,
+      id: id as string,
       name: runName,
       pace: parseFloat(pace as string), 
       calories: parseInt(calories as string),

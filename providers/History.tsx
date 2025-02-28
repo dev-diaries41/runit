@@ -1,24 +1,24 @@
 import { createContext, useState, useContext, ReactNode } from 'react';
-import { ExcerciseHistory } from '@/types';
+import { RunSession } from '@/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export interface RunItContextProps {
-  selectedExceriseResults: ExcerciseHistory | null;
-  setSelectedExceriseResults: React.Dispatch<React.SetStateAction< ExcerciseHistory | null>>; 
-  exerciseHistory: ExcerciseHistory[];
-  setExerciseHistory: React.Dispatch<React.SetStateAction< ExcerciseHistory[]>>; 
+  selectedExceriseResults: RunSession | null;
+  setSelectedExceriseResults: React.Dispatch<React.SetStateAction< RunSession | null>>; 
+  exerciseHistory: RunSession[];
+  setExerciseHistory: React.Dispatch<React.SetStateAction< RunSession[]>>; 
 }
 
 const RunItContext = createContext<RunItContextProps | undefined>(undefined);
 
 interface RunItProviderProps {
   children: ReactNode;
-  storedExcerciseHistory: ExcerciseHistory[]
+  storedExcerciseHistory: RunSession[]
 }
 
 const RunItProvider = ({ children, storedExcerciseHistory }: RunItProviderProps) => {
-  const [selectedExceriseResults, setSelectedExceriseResults] = useState<ExcerciseHistory | null>(null);
-  const [exerciseHistory, setExerciseHistory] = useState<ExcerciseHistory[]>(storedExcerciseHistory);
+  const [selectedExceriseResults, setSelectedExceriseResults] = useState<RunSession | null>(null);
+  const [exerciseHistory, setExerciseHistory] = useState<RunSession[]>(storedExcerciseHistory);
 
   return (
     <RunItContext.Provider value={{
@@ -40,7 +40,7 @@ const useRunIt = () => {
   const {selectedExceriseResults, setSelectedExceriseResults, exerciseHistory, setExerciseHistory} = context;
 
 
-  const saveExerciseResults = async(result: ExcerciseHistory) => {
+  const saveExerciseResults = async(result: RunSession) => {
     try {
         setExerciseHistory(prev => [...prev, result])
         await AsyncStorage.setItem(result.id, JSON.stringify(result));     
@@ -50,7 +50,7 @@ const useRunIt = () => {
   }
 
 
-  const viewExceriseResults = (appToView: ExcerciseHistory) => {
+  const viewExceriseResults = (appToView: RunSession) => {
     setSelectedExceriseResults(appToView)
   }
 

@@ -10,7 +10,7 @@ import 'react-native-reanimated';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { SettingsProvider } from '@/providers/Settings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {ExcerciseHistory, Settings } from '@/types';
+import {RunSession, Settings } from '@/types';
 import { Colors } from '@/constants/Colors';
 import { GlobalMenuActionsProvider } from '@/providers/Globals';
 import { RunItProvider } from '@/providers/History';
@@ -22,7 +22,7 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [storedSettings, setStoredSettings] = useState<Settings|null>(null);
-  const [storedExcerciseHistory, setStoredExcerciseHistory] = useState<ExcerciseHistory[]>([])
+  const [storedExcerciseHistory, setStoredExcerciseHistory] = useState<RunSession[]>([])
   const [appIsReady, setAppIsReady] = useState(false);
 
   if(colorScheme){
@@ -39,7 +39,7 @@ export default function RootLayout() {
       const existingKeys = new Set(storedExcerciseHistory.map(item => item.id));
       const [settingsItem, batchResults] = await Promise.all([
         AsyncStorage.getItem('settings'),
-        fetchAsyncStorageBatch<ExcerciseHistory>(50, key => key.includes("run") && !existingKeys.has(key))
+        fetchAsyncStorageBatch<RunSession>(50, key => key.includes("run") && !existingKeys.has(key))
       ]);
 
       if (settingsItem) {

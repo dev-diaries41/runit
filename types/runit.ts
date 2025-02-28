@@ -10,7 +10,7 @@ export interface Metrics {
   time: number;
 }
 
-export interface ExcerciseHistory extends Metrics {
+export interface RunSession extends Metrics {
   id: string;
   name: string;
 }

@@ -1,20 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Alert } from 'react-native';
 import { useSettings } from '@/providers/Settings';
-import { Metrics } from '@/types';
+import { RunSession, Metrics } from '@/types';
 import { Time } from '@/constants/globals';
 
 export function useMetrics(distance: number, elapsedTime: number) {
   const { settings } = useSettings();
-  const [metrics, setMetrics] = useState<Metrics | null>(null);
+  const [runSession, setRunSession] = useState<RunSession | null>(null);
   const [metricsTimeSeries, setMetricsTimeSeries] = useState<Metrics[]>([]);
+  const idRef = useRef<string|null>(null);
+
   const monitorInterval = 30 * Time.sec;
 
   // useEffect(() => {
   //   const monitorMetrics = () => {
   //     try {
-  //       const newMetrics = getMetrics(distance, elapsedTime);  
-  //       setMetrics(newMetrics);
+  //       const newMetrics = getRunSession(distance, elapsedTime);  
+  //       setRunSession(newMetrics);
   //       setMetricsTimeSeries(prev => {
   //         const updatedSeries = [...prev, newMetrics];
   //         return updatedSeries.length > 120 ? updatedSeries.slice(1) : updatedSeries; // track most recent hour
@@ -31,15 +33,27 @@ export function useMetrics(distance: number, elapsedTime: number) {
   //   }
   // }, [Math.floor(elapsedTime / monitorInterval), distance]); 
   
+  const  exerciseIdToName = (id: string): string => {
+    const timestamp = parseInt(id.split('_')[0]);
+    const date = new Date(timestamp);
+    return `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getFullYear())} Run`;  
+  }
 
-  const getMetrics = (distance: number, elapsedTime: number): Metrics => {
+  const getRunSession = (distance: number, elapsedTime: number): RunSession => {
     const weight = parseInt(settings.weight);
     if (isNaN(weight)) throw new Error("Missing weight");
     
+    if(!idRef.current){
+      idRef.current = `${Date.now()}_run`;
+    }
+
+    const name = exerciseIdToName(idRef.current)
     const calories = calculateCalories(weight, distance);
     const pace = calculateAvgPace(distance, elapsedTime);
-    
+
     return {
+      id:idRef.current,
+      name,
       calories, 
       pace, 
       distance: parseFloat(distance.toFixed(2)), 
@@ -56,25 +70,26 @@ export function useMetrics(distance: number, elapsedTime: number) {
     }
   };
 
-  const getCurrentMetrics = () => {
+  const updateRunSession = () => {
     try {
-      const newMetrics = getMetrics(distance, elapsedTime);
-      setMetrics(newMetrics);
+      const newMetrics = getRunSession(distance, elapsedTime);
+      setRunSession(newMetrics);
     } catch (error) {
       onMetricsError(error);
     }
   };
 
-  const resetMetrics = () => {
-    setMetrics(null);
+  const resetRunSession = () => {
+    idRef.current = null;
+    setRunSession(null);
     setMetricsTimeSeries([]);
   };
 
   return { 
-    metrics, 
+    runSession, 
     metricsTimeSeries,
-    getCurrentMetrics, 
-    resetMetrics ,
+    updateRunSession, 
+    resetRunSession ,
   };
 }
 

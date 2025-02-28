@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { StyleSheet, Dimensions } from 'react-native';
 import ParallaxScrollView from '@/components/ui/common/ParallaxScrollView';
 import Stopwatch from '@/components/ui/utilities/Stopwatch';
@@ -17,26 +16,26 @@ const {height} = Dimensions.get('window');
 export default function Screen() {
   const { elapsedTime, isRunning, start, stop, reset } = useStopwatch();
   const {distance} = useLocation();
-  const { metrics, getCurrentMetrics, resetMetrics } = useMetrics(distance, elapsedTime);
+  const { runSession, updateRunSession, resetRunSession } = useMetrics(distance, elapsedTime);
   const router = useRouter();
   const tintColor = useThemeColor({}, 'tint');
 
   const handleStartRun = async() => {
-    await start()
-    if(metrics){
-      resetMetrics();
+    if(runSession){
+      resetRunSession();
     }
+    await start()
   }
 
 
 const handleStopRun = async () => {
   await stop();
-  getCurrentMetrics();
+  updateRunSession();
 };
 
 const handleReset = async () => {
   await reset();
-  resetMetrics();
+  resetRunSession();
 };
 
   
@@ -60,14 +59,13 @@ const handleReset = async () => {
           onPress={()=> {alert("Viewing graph: " + JSON.stringify(metricsTimeSeries))}} 
           text='View graph'/>
       )} */}
-        {metrics && (
+        {runSession && (
         <Button
           style={{width: "50%"}}
-          onPress={()=>router.push({pathname: '/metrics', params: {...metrics}})} 
+          onPress={()=>router.push({pathname: '/metrics', params: {...runSession}})} 
           text='View metrics'/>
       )}
       </ThemedView>
-    
     </ParallaxScrollView>
   );
 }

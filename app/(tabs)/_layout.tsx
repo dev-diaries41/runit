@@ -13,10 +13,10 @@ import { MainMenu } from '@/components/ui/common/GlobalMenu';
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   
-  const { toggleMenu, menuItems } = useGlobalMenuActions(); // Ensure you have a state for menu open/close
+  // const { toggleMenu, menuItems } = useGlobalMenuActions(); // Ensure you have a state for menu open/close
 
-  const headerRightButtons = [
-    { icon: 'menu', onPress: toggleMenu },
+  const headerRightButtonsHistoryScreen = [
+    { icon: 'menu', onPress: () => {} },
   ];
 
   return (
@@ -51,7 +51,7 @@ export default function TabLayout() {
             headerTransparent: true,
             // headerTitle: '',
             headerSearchBarOptions:{autoFocus: true},
-            headerLeft: () => <NavBar navItems={headerRightButtons} />,
+            headerLeft: () => <NavBar navItems={headerRightButtonsHistoryScreen} />,
             tabBarIcon: ({ color }) => <IconSymbol size={28} name="figure.run" color={color} />,
           }}
         />
@@ -66,20 +66,19 @@ export default function TabLayout() {
       </Tabs>
 
       {/* Global Bottom Sheet, rendered outside of the individual screens */}
-      <View style={styles.bottomSheetContainer}>
+      {/* <View style={styles.bottomSheetContainer}>
         <MainMenu menuItems={menuItems}/>
-      </View>
+      </View> */}
     </>
   );
 }
 
-// Styling to ensure proper positioning of the BottomSheet
 const styles = StyleSheet.create({
   bottomSheetContainer: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    zIndex: 999, // Ensure the BottomSheet overlays above the tabs
+    zIndex: 999, 
   },
 });

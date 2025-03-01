@@ -1,23 +1,27 @@
-import { useLayoutEffect } from 'react';
-import {NavBarProps} from '@/types';
+import { useLayoutEffect, useState } from 'react';
 import NavBar from '@/components/ui/common/NavBars';
-import { StyleSheet, TextInputProps } from 'react-native';
+import { TextInputProps } from 'react-native';
 import { useNavigation } from 'expo-router';
 
-const useNavBar = ({ navigation }: NavBarProps) => {
-  const HeaderRight = () => (
-    <NavBar navItems={[]}>
-    </NavBar>)
+export const useRunHistoryNavBar = () => {
+  const navigation = useNavigation();
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
+
+  const headerRightButtonsHistoryScreen = [
+    { icon: 'menu', onPress: () => setIsMenuVisible(prev => !prev) },
+  ];
+
+  const HeaderLeft = () => (
+    <NavBar navItems={headerRightButtonsHistoryScreen}/>
+  )
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: HeaderRight
+      headerLeft: HeaderLeft
     });
   }, []);
 
-  return {
-   
-  }
+  return {isMenuVisible}
 };
 
 interface SearchBarProps {
@@ -41,7 +45,7 @@ interface SearchBarProps {
   placeholder?: string;
 }
 
-const useSearchBar = ({ placeholder, onClose, onChangeText, onBlur, onFocus }: SearchBarProps) => {
+export const useSearchBar = ({ placeholder, onClose, onChangeText, onBlur, onFocus }: SearchBarProps) => {
   const navigation = useNavigation();
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -49,17 +53,5 @@ const useSearchBar = ({ placeholder, onClose, onChangeText, onBlur, onFocus }: S
     });
   }, []);
 
-  return {
-   
-  }
+  return {}
 };
-
-export {useNavBar, useSearchBar};
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-});

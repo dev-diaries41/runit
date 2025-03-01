@@ -11,7 +11,6 @@ import HistoryCard from '@/components/ui/runit/HistoryCard';
 import { fetchAsyncStorageBatch } from '@/lib/storage';
 import { ThemedView } from '@/components/ui/common/ThemedView';
 import { useRunHistoryNavBar, useSearchBar } from '@/hooks/useNavBar';
-import { useGlobalMenuActions } from '@/providers/Globals';
 
 const BATCH_SIZE = 50;
 const {height} = Dimensions.get('window')
@@ -20,7 +19,7 @@ export default function Screen({}) {
   const {runHistory, setRunHistory} = useRunIt();
   const [loadedAllItems, setLoadedItems] = useState(false);
   const {setQuery, query, searchResults, setSearchResults} = useSearch();
-  const {isMenuVisible} = useRunHistoryNavBar()
+  const {isMenuVisible} = useRunHistoryNavBar();
 
   const handleSearch = (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
     try {

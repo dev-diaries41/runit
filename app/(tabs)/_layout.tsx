@@ -8,7 +8,6 @@ import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import NavBar from '@/components/ui/common/NavBars';
 import { useGlobalMenuActions } from '@/providers/Globals';
-import { MainMenu } from '@/components/ui/common/GlobalMenu';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();

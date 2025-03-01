@@ -117,4 +117,12 @@ const styles = StyleSheet.create({
     minHeight: height,
     paddingTop: sizes.layout.xxLarge * 1.5,
   },
+
+  bottomSheetContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: 999, 
+  },
 });

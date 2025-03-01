@@ -7,12 +7,13 @@ import TabBarBackground from '@/components/ui/common/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import NavBar from '@/components/ui/common/NavBars';
-import { useGlobalMenuActions } from '@/providers/Globals';
+// import { useGlobalMenuActions } from '@/providers/Globals';
+// import { Menu } from '@/components/ui/common/Menu';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   
-  // const { toggleMenu, menuItems } = useGlobalMenuActions(); // Ensure you have a state for menu open/close
+  // const { toggleMenu, menuItems, showMenu } = useGlobalMenuActions(); // Ensure you have a state for menu open/close
 
   const headerRightButtonsHistoryScreen = [
     { icon: 'menu', onPress: () => {} },
@@ -66,7 +67,7 @@ export default function TabLayout() {
 
       {/* Global Bottom Sheet, rendered outside of the individual screens */}
       {/* <View style={styles.bottomSheetContainer}>
-        <MainMenu menuItems={menuItems}/>
+        <Menu menuItems={menuItems} isVisible={showMenu} toggleMenu={toggleMenu}/>
       </View> */}
     </>
   );

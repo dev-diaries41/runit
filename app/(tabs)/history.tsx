@@ -6,11 +6,12 @@ import useSearch from '@/hooks/useSearch';
 import EmptyScreen from '@/components/ui/common/EmptyScreen';
 import List from '@/components/ui/common/Lists';
 import { useRunIt } from '@/providers/History';
-import { RunSession } from '@/types';
+import { MenuItem, RunSession } from '@/types';
 import HistoryCard from '@/components/ui/runit/HistoryCard';
 import { fetchAsyncStorageBatch } from '@/lib/storage';
 import { ThemedView } from '@/components/ui/common/ThemedView';
 import { useRunHistoryNavBar, useSearchBar } from '@/hooks/useNavBar';
+import { Menu } from '@/components/ui/common/Menu';
 
 const BATCH_SIZE = 50;
 const {height} = Dimensions.get('window')
@@ -19,7 +20,7 @@ export default function Screen({}) {
   const {runHistory, setRunHistory} = useRunIt();
   const [loadedAllItems, setLoadedItems] = useState(false);
   const {setQuery, query, searchResults, setSearchResults} = useSearch();
-  const {isMenuVisible} = useRunHistoryNavBar();
+  const {isMenuVisible, toggleMenu} = useRunHistoryNavBar();
 
   const handleSearch = (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
     try {
@@ -44,6 +45,11 @@ export default function Screen({}) {
     onChangeText: handleSearch,
     onClose: handleCancelSearch
   })
+
+  const menuItems:MenuItem[] = [
+    {icon: 'image', name: 'View Charts', onPress: toggleMenu},
+    {icon: 'camera', name: 'Export data', onPress: toggleMenu}
+  ]
 
   const loadMoreItems = async () => {
     if(loadedAllItems)return;
@@ -92,6 +98,9 @@ export default function Screen({}) {
           />
         </ThemedView>   
       </ParallaxScrollView>
+        <View style={styles.bottomSheetContainer}>
+          <Menu menuItems={menuItems} isVisible={isMenuVisible} toggleMenu={toggleMenu}/>
+        </View>
     </ThemedView>
   );
   
@@ -113,7 +122,8 @@ const styles = StyleSheet.create({
   runHistoryContainer:{
     flex:1,
     height: '100%',
-    minHeight: height,
+    maxHeight: height - sizes.layout.xxLarge * 1.5,
+    minHeight: height - sizes.layout.xxLarge * 1.5,
     paddingTop: sizes.layout.xxLarge * 1.5,
   },
 

@@ -7,8 +7,10 @@ export const useRunHistoryNavBar = () => {
   const navigation = useNavigation();
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
+  const toggleMenu = () => setIsMenuVisible(prev => !prev);
+
   const headerRightButtonsHistoryScreen = [
-    { icon: 'menu', onPress: () => setIsMenuVisible(prev => !prev) },
+    { icon: 'menu', onPress: toggleMenu },
   ];
 
   const HeaderLeft = () => (
@@ -21,7 +23,10 @@ export const useRunHistoryNavBar = () => {
     });
   }, []);
 
-  return {isMenuVisible}
+  return {
+    isMenuVisible, 
+    toggleMenu
+  }
 };
 
 interface SearchBarProps {

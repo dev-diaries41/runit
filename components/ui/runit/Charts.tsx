@@ -6,6 +6,7 @@ import {
 import { Dataset } from 'react-native-chart-kit/dist/HelperTypes';
 import { ThemedText } from '../common/ThemedText';
 import { AbstractChartConfig } from 'react-native-chart-kit/dist/AbstractChart';
+import { sizes } from '@/constants/layout';
 
 interface PaceChartProps {
     datasets: Dataset[];
@@ -13,6 +14,8 @@ interface PaceChartProps {
     title?: string;
     chartConfig?: AbstractChartConfig
 }
+
+
 export const PaceChart = ({
     datasets, 
     labels,
@@ -20,15 +23,15 @@ export const PaceChart = ({
     chartConfig = {}
     
 }: PaceChartProps) => {
+
+  
   return (
-    <View>
-  <ThemedText type="title">{title}</ThemedText>
+  <View style={styles.container}>
+  <ThemedText type="subtitle">{title}</ThemedText>
   <LineChart
     data={{labels, datasets}}
     width={Dimensions.get("window").width} // from react-native
     height={220}
-    // yAxisLabel="$"
-    // yAxisSuffix="k"
     yAxisInterval={1} // optional, defaults to 1
     chartConfig={{
       backgroundColor: "#e26a00",
@@ -37,11 +40,12 @@ export const PaceChart = ({
       decimalPlaces: 2, // optional, defaults to 2dp
       color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
       labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+      horizontalLabelRotation: 30,
       style: {
         borderRadius: 16
       },
       propsForDots: {
-        r: "6",
+        r: "4",
         strokeWidth: "2",
         stroke: "#ffa726"
       },
@@ -50,7 +54,7 @@ export const PaceChart = ({
     bezier
     style={{
       marginVertical: 8,
-      borderRadius: 16
+      borderRadius: 16,
     }}
   />
 </View>
@@ -59,7 +63,10 @@ export const PaceChart = ({
 
 
 const styles = StyleSheet.create({
-    container: {
-        flex:1
-    }
-})
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: sizes.layout.small,
+  },
+});

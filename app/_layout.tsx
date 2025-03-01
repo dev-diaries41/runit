@@ -79,6 +79,7 @@ export default function RootLayout() {
         <Stack initialRouteName='(tabs)'>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="metrics" options={{ headerShown: true, headerTitle:'', headerTransparent: true }} />
+          <Stack.Screen name="analysis" options={{ headerShown: true, headerTitle:'', headerTransparent: true }} />
           <Stack.Screen name="+not-found" />
         </Stack>
         <StatusBar style="auto" />

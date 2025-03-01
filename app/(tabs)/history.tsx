@@ -12,6 +12,7 @@ import { fetchAsyncStorageBatch } from '@/lib/storage';
 import { ThemedView } from '@/components/ui/common/ThemedView';
 import { useRunHistoryNavBar, useSearchBar } from '@/hooks/useNavBar';
 import { Menu } from '@/components/ui/common/Menu';
+import { useRouter } from 'expo-router';
 
 const BATCH_SIZE = 50;
 const {height} = Dimensions.get('window')
@@ -21,6 +22,7 @@ export default function Screen({}) {
   const [loadedAllItems, setLoadedItems] = useState(false);
   const {setQuery, query, searchResults, setSearchResults} = useSearch();
   const {isMenuVisible, toggleMenu} = useRunHistoryNavBar();
+  const router = useRouter();
 
   const handleSearch = (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
     try {
@@ -46,9 +48,14 @@ export default function Screen({}) {
     onClose: handleCancelSearch
   })
 
+  const viewCharts = () => {
+    toggleMenu();
+    router.push('/analysis')
+  }
+
   const menuItems:MenuItem[] = [
-    {icon: 'image', name: 'View Charts', onPress: toggleMenu},
-    {icon: 'camera', name: 'Export data', onPress: toggleMenu}
+    {icon: 'bar-chart', name: 'Performance analysis', onPress: viewCharts},
+    {icon: 'share', name: 'Export data', onPress: toggleMenu}
   ]
 
   const loadMoreItems = async () => {
@@ -98,9 +105,7 @@ export default function Screen({}) {
           />
         </ThemedView>   
       </ParallaxScrollView>
-        <View style={styles.bottomSheetContainer}>
-          <Menu menuItems={menuItems} isVisible={isMenuVisible} toggleMenu={toggleMenu}/>
-        </View>
+      <Menu menuItems={menuItems} isVisible={isMenuVisible} toggleMenu={toggleMenu}/>
     </ThemedView>
   );
   
@@ -125,13 +130,5 @@ const styles = StyleSheet.create({
     maxHeight: height - sizes.layout.xxLarge * 1.5,
     minHeight: height - sizes.layout.xxLarge * 1.5,
     paddingTop: sizes.layout.xxLarge * 1.5,
-  },
-
-  bottomSheetContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    zIndex: 999, 
   },
 });

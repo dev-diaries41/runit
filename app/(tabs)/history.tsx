@@ -50,7 +50,7 @@ export default function Screen({}) {
 
   const viewCharts = () => {
     toggleMenu();
-    router.push('/analysis')
+    router.push('/analysis');
   }
 
   const menuItems:MenuItem[] = [
@@ -127,8 +127,7 @@ const styles = StyleSheet.create({
   runHistoryContainer:{
     flex:1,
     height: '100%',
-    maxHeight: height - sizes.layout.xxLarge * 1.5,
-    minHeight: height - sizes.layout.xxLarge * 1.5,
-    paddingTop: sizes.layout.xxLarge * 1.5,
+    minHeight: height - sizes.layout.xxLarge,
+    paddingTop: sizes.layout.xxLarge * 2,
   },
 });

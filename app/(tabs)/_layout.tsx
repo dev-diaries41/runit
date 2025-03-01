@@ -24,10 +24,7 @@ export default function TabLayout() {
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-          headerShown: true,
-          headerTransparent: true,
-          headerTitle: '',
-          headerRight: () => <NavBar navItems={headerRightButtons} />,
+          headerShown: false,
           tabBarButton: HapticTab,
           tabBarBackground: TabBarBackground,
           tabBarStyle: Platform.select({
@@ -50,6 +47,11 @@ export default function TabLayout() {
           name="history"
           options={{
             title: 'Run History',
+            headerShown: true,
+            headerTransparent: true,
+            // headerTitle: '',
+            headerSearchBarOptions:{autoFocus: true},
+            headerLeft: () => <NavBar navItems={headerRightButtons} />,
             tabBarIcon: ({ color }) => <IconSymbol size={28} name="figure.run" color={color} />,
           }}
         />

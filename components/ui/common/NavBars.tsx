@@ -15,7 +15,7 @@ type NavItem = {
 
 
 const NavBar = ({ navItems, children }: { navItems: NavItem[]; children?: ReactNode }) => {
-    const iconColor = useThemeColor({}, 'icon')
+    const iconColor = useThemeColor({}, 'text')
   return (
       <View style={styles.navRowItems}>
           {navItems.map((item, index) => (
@@ -39,8 +39,8 @@ const styles = StyleSheet.create({
       flexDirection: 'row', 
       justifyContent:"space-between",
       alignItems:'center',
-      marginHorizontal: sizes.layout.medium,
-      gap:sizes.layout.medium
+      marginHorizontal: sizes.layout.small,
+      gap:sizes.layout.small
     },
     tagContainer:{
       justifyContent:"flex-start",

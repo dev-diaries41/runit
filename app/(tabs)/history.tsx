@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, StatusBar } from 'react-native';
+import { View, StyleSheet, NativeSyntheticEvent, TextInputChangeEventData, Dimensions } from 'react-native';
 import { sizes } from '@/constants/layout';
-import Search from '@/components/ui/common/Search';
 import ParallaxScrollView from '@/components/ui/common/ParallaxScrollView';
-import { useThemeColor } from '@/hooks/useThemeColor';
 import useSearch from '@/hooks/useSearch';
 import EmptyScreen from '@/components/ui/common/EmptyScreen';
 import List from '@/components/ui/common/Lists';
@@ -12,15 +10,39 @@ import { RunSession } from '@/types';
 import HistoryCard from '@/components/ui/runit/HistoryCard';
 import { fetchAsyncStorageBatch } from '@/lib/storage';
 import { ThemedView } from '@/components/ui/common/ThemedView';
+import { useSearchBar } from '@/hooks/useNavBar';
 
+const BATCH_SIZE = 50;
+const {height} = Dimensions.get('window')
 
 export default function Screen({}) {
   const {runHistory, setRunHistory} = useRunIt();
   const [loadedAllItems, setLoadedItems] = useState(false);
   const {setQuery, query, searchResults, setSearchResults} = useSearch();
-  const color = useThemeColor({}, 'text');
   
-  const BATCH_SIZE = 50;
+  const handleSearch = (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
+    try {
+      const query = e.nativeEvent.text
+      setQuery(query)
+      const filteredNotes = runHistory.filter((exerciseResult: RunSession) =>
+        exerciseResult.name.toLowerCase().includes(query.toLowerCase())
+      );
+      setSearchResults(filteredNotes);
+    } catch (error) {
+      console.error('Error searching:', error);
+    }
+  };
+  
+  const handleCancelSearch = () => {
+    setQuery('');
+    setSearchResults([])
+  };
+
+  useSearchBar({
+    placeholder:'Search exercise history...',
+    onChangeText: handleSearch,
+    onClose: handleCancelSearch
+  })
 
   const loadMoreItems = async () => {
     if(loadedAllItems)return;
@@ -37,23 +59,6 @@ export default function Screen({}) {
     }
   };
   
-
-  const handleSearch = (query: string) => {
-    try {
-      setQuery(query)
-      const filteredNotes = runHistory.filter((exerciseResult: RunSession) =>
-        exerciseResult.name.toLowerCase().includes(query.toLowerCase())
-      );
-      setSearchResults(filteredNotes);
-    } catch (error) {
-      console.error('Error searching:', error);
-    }
-  };
-  
-  const handleCancel = () => {
-    setQuery('');
-    setSearchResults([])
-  };  
 
   const renderItem = ({ item, index }: any) => {
     return (
@@ -73,19 +78,10 @@ export default function Screen({}) {
   }
 
   return (
-    <ThemedView style={{flex:1}}>
-      <View style={styles.searchBar}>
-        <Search
-        query={query}
-        onSearch={handleSearch}
-        onCancel={handleCancel}
-        color={color}
-        placeholder='Search exercise history...'
-        />
-      </View>
+    <ThemedView style={styles.container}>
       <ParallaxScrollView
       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}>  
-      <ThemedView style={styles.container}>
+      <ThemedView style={styles.runHistoryContainer}>
           <List
           items={runHistory}
           searchResults={searchResults}
@@ -113,20 +109,13 @@ const styles = StyleSheet.create({
     gap: 16
   },
 
-  excerciseHistoryContainer:{
+  runHistoryContainer:{
     flex:1,
     alignItems:'center',
     height: '100%',
+    minHeight: height,
     width: "auto",
     marginBottom: 'auto',
-    paddingTop: sizes.layout.medium,
+    paddingTop: sizes.layout.xxLarge * 1.5,
   },
-  
-  searchBar:{
-    flex:0.1,
-    alignItems:'center',
-    marginVertical: sizes.layout.small,
-    paddingHorizontal: sizes.layout.medium,
-    marginTop: StatusBar.currentHeight? StatusBar.currentHeight * 3: 0
-  }
 });

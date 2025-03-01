@@ -11,6 +11,7 @@ import HistoryCard from '@/components/ui/runit/HistoryCard';
 import { fetchAsyncStorageBatch } from '@/lib/storage';
 import { ThemedView } from '@/components/ui/common/ThemedView';
 import { useSearchBar } from '@/hooks/useNavBar';
+import { useGlobalMenuActions } from '@/providers/Globals';
 
 const BATCH_SIZE = 50;
 const {height} = Dimensions.get('window')
@@ -19,7 +20,8 @@ export default function Screen({}) {
   const {runHistory, setRunHistory} = useRunIt();
   const [loadedAllItems, setLoadedItems] = useState(false);
   const {setQuery, query, searchResults, setSearchResults} = useSearch();
-  
+  const {showMenu} = useGlobalMenuActions()
+
   const handleSearch = (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
     try {
       const query = e.nativeEvent.text
@@ -78,7 +80,7 @@ export default function Screen({}) {
   }
 
   return (
-    <ThemedView style={styles.container}>
+    <ThemedView style={[styles.container, {opacity: showMenu? 0.5 : 1}]}>
       <ParallaxScrollView
       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}>  
         <ThemedView style={styles.runHistoryContainer}>

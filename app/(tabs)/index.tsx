@@ -9,16 +9,14 @@ import { Button } from '@/components/ui/buttons/Buttons';
 import { useRouter } from 'expo-router';
 import { useLocation } from '@/hooks/runit/useLocation';
 import { useMetrics } from '@/hooks/runit/useMetrics';
-import { useThemeColor } from '@/hooks/useThemeColor';
 
 const {height} = Dimensions.get('window');
 
 export default function Screen() {
   const { elapsedTime, isRunning, start, stop, reset } = useStopwatch();
-  const {distance} = useLocation();
+  const {distance} = useLocation(isRunning);
   const { runSession, updateRunSession, resetRunSession } = useMetrics(distance, elapsedTime);
   const router = useRouter();
-  const tintColor = useThemeColor({}, 'tint');
 
   const handleStartRun = async() => {
     if(runSession){
@@ -53,12 +51,6 @@ const handleReset = async () => {
         />
       </ThemedView>
       <ThemedView style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-      {/* {metricsTimeSeries.length > 0 && (
-        <Button
-          style={{width: "50%", borderColor: tintColor}}
-          onPress={()=> {alert("Viewing graph: " + JSON.stringify(metricsTimeSeries))}} 
-          text='View graph'/>
-      )} */}
         {runSession && (
         <Button
           style={{width: "50%"}}

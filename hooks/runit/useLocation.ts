@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import Geolocation, { GeoPosition, GeoError, GeoOptions, GeoWatchOptions } from "react-native-geolocation-service";
+import Geolocation, { GeoPosition, GeoError, GeoWatchOptions } from "react-native-geolocation-service";
 import { PermissionsAndroid, Platform } from "react-native";
 
 const geoWatchOptions: GeoWatchOptions = {
@@ -7,20 +7,19 @@ const geoWatchOptions: GeoWatchOptions = {
     android: 'high',
   },
   enableHighAccuracy: true,
-  distanceFilter: 10, // Location updates every 10 meters, suitable for jogging
-  interval: 10000, // Set a fixed interval of 10 seconds between updates (adjustable)
-  useSignificantChanges: false, // Use constant location updates to track every movement while jogging
-  showsBackgroundLocationIndicator: true, // Display a background indicator for transparency
+  distanceFilter: 10,
+  interval: 10000,
+  useSignificantChanges: false,
+  showsBackgroundLocationIndicator: true,
 };
 
 
-export function useLocation() {
+export function useLocation(shouldTrack: boolean) {
   const [distance, setDistance] = useState<number>(0);
   const prevLocationRef = useRef<GeoPosition | null>(null);
+  const watchIdRef = useRef<number | null>(null);
 
   useEffect(() => {
-    let watchId: number | null = null;
-
     const startLocationTracking = async () => {
       const hasPermission = await requestLocationPermission();
       if (!hasPermission) {
@@ -29,7 +28,7 @@ export function useLocation() {
       }
 
       // Start watching position changes
-      watchId = Geolocation.watchPosition(
+      watchIdRef.current = Geolocation.watchPosition(
         (position: GeoPosition) => {
           if (prevLocationRef.current) {
             const newDistance = calculateDistance(
@@ -49,14 +48,18 @@ export function useLocation() {
       );
     };
 
-    startLocationTracking();
+    // Only start tracking if not already tracking
+    if(shouldTrack && watchIdRef.current === null){
+      startLocationTracking();
+    }
 
     return () => {
-      if (watchId !== null) {
-        Geolocation.clearWatch(watchId);
+      if (watchIdRef.current !== null) {
+        Geolocation.clearWatch(watchIdRef.current);
+        watchIdRef.current = null;
       }
     };
-  }, []);
+  }, [shouldTrack]);
 
   const requestLocationPermission = async (): Promise<boolean> => {
     if (Platform.OS === "android") {

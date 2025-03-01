@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Animated, Dimensions } from 'react-native';
+import { Animated, Dimensions, StyleSheet } from 'react-native';
 import { AnimatedFlashList } from '@shopify/flash-list';
 import {sizes } from '@/constants/layout';
 import { useDurationAnimation } from '@/hooks/useAnimation';
@@ -26,7 +26,7 @@ export default function List<T extends Record<string, any>>({
     const {animatedValue} = useDurationAnimation({delay: 100})
 
     return (
-    <Animated.View style={[{opacity: animatedValue}]}>
+    <Animated.View style={[styles.container, {opacity: animatedValue}]}            >
         <AnimatedFlashList
             onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
                 useNativeDriver: true,
@@ -47,3 +47,9 @@ export default function List<T extends Record<string, any>>({
     </Animated.View>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flex:1,
+    }
+}) 

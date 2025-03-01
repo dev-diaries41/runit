@@ -81,7 +81,7 @@ export default function Screen({}) {
     <ThemedView style={styles.container}>
       <ParallaxScrollView
       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}>  
-      <ThemedView style={styles.runHistoryContainer}>
+        <ThemedView style={styles.runHistoryContainer}>
           <List
           items={runHistory}
           searchResults={searchResults}
@@ -111,11 +111,8 @@ const styles = StyleSheet.create({
 
   runHistoryContainer:{
     flex:1,
-    alignItems:'center',
     height: '100%',
     minHeight: height,
-    width: "auto",
-    marginBottom: 'auto',
     paddingTop: sizes.layout.xxLarge * 1.5,
   },
 });

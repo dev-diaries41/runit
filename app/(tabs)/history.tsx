@@ -93,7 +93,8 @@ export default function Screen({}) {
   }
 
   return (
-    <ThemedView style={[styles.container, {opacity: isMenuVisible? 0.5 : 1}]}>
+    <ThemedView style={[styles.container]}>
+        {isMenuVisible && <View style={styles.overlay} />}  
       <ParallaxScrollView
       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}>  
         <ThemedView style={styles.runHistoryContainer}>
@@ -106,7 +107,9 @@ export default function Screen({}) {
           />
         </ThemedView>   
       </ParallaxScrollView>
-      <Menu menuItems={menuItems} isVisible={isMenuVisible} toggleMenu={toggleMenu}/>
+      <View style={styles.menuContainer}>
+        <Menu menuItems={menuItems} isVisible={isMenuVisible} toggleMenu={toggleMenu}/>
+      </View>
     </ThemedView>
   );
   
@@ -131,4 +134,17 @@ const styles = StyleSheet.create({
     minHeight: height - sizes.layout.xxLarge,
     paddingTop: sizes.layout.xxLarge * 2,
   },
+
+  menuContainer: {
+    position: 'absolute',
+    bottom:0,
+    left:0,
+    right:0,
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject, // Covers the entire parent view
+    backgroundColor: 'rgba(0, 0, 0, 0.3)', // Dark semi-transparent overlay
+    zIndex: 2, // Ensure it overlays content but below the menu
+  },
+  
 });

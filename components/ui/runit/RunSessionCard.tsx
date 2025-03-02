@@ -26,7 +26,6 @@ interface RunSessionCardProps {
 const RunSessionCard = React.memo(({ result, index, onDelete }: RunSessionCardProps) => {
   const { name, distance, time } = result;
   const cardColor = useThemeColor({}, 'card');
-  const iconColor = useThemeColor({}, 'icon');
   const borderColor = useThemeColor({}, 'border');
   const router = useRouter();
 
@@ -77,12 +76,6 @@ const RunSessionCard = React.memo(({ result, index, onDelete }: RunSessionCardPr
                 <ThemedText type="defaultSemiBold">
                   🗓️ {name.replace('Run', '').trim()}
                 </ThemedText>
-                <IconButton
-                  iconSize={18}
-                  icon={'ellipsis-vertical'}
-                  onPress={() => {}}
-                  color={iconColor}
-                />
               </View>
               <View style={styles.appTextContainer}>
                 <ThemedText style={{ opacity: 0.8 }}>
@@ -105,7 +98,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: ITEM_HEIGHT,
     position: 'relative',
-    backgroundColor: 'transparent',
   },
   animatedCard: {
     position: 'absolute',
@@ -147,7 +139,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: sizes.layout.small,
-    zIndex: -10,
   },
   deleteText: {
     color: 'white',

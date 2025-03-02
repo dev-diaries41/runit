@@ -13,7 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {RunSession, Settings } from '@/types';
 import { Colors } from '@/constants/colors';
 import { GlobalMenuActionsProvider } from '@/providers/Globals';
-import { RunItProvider } from '@/providers/History';
+import { RunItProvider } from '@/providers/RunIt';
 import { fetchAsyncStorageBatch } from '@/lib/storage';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.

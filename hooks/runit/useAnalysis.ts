@@ -1,5 +1,5 @@
 import { Dimensions } from 'react-native';
-import { useRunIt } from '@/providers/History';
+import { useRunIt } from '@/providers/RunIt';
 import { Dataset } from 'react-native-chart-kit/dist/HelperTypes';
 import { formatTime } from '@/lib/helpers';
 

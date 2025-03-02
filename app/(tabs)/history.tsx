@@ -5,20 +5,21 @@ import ParallaxScrollView from '@/components/ui/common/ParallaxScrollView';
 import useSearch from '@/hooks/useSearch';
 import EmptyScreen from '@/components/ui/common/EmptyScreen';
 import List from '@/components/ui/common/Lists';
-import { useRunIt } from '@/providers/History';
+import { useRunIt } from '@/providers/RunIt';
 import { MenuItem, RunSession } from '@/types';
-import HistoryCard from '@/components/ui/runit/HistoryCard';
+import RunSessionCard from '@/components/ui/runit/RunSessionCard';
 import { fetchAsyncStorageBatch } from '@/lib/storage';
 import { ThemedView } from '@/components/ui/common/ThemedView';
 import { useRunHistoryNavBar, useSearchBar } from '@/hooks/useNavBar';
 import { Menu } from '@/components/ui/common/Menu';
 import { useRouter } from 'expo-router';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const BATCH_SIZE = 50;
 const {height} = Dimensions.get('window')
 
 export default function Screen({}) {
-  const {runHistory, setRunHistory} = useRunIt();
+  const {runHistory, setRunHistory, deleteRunSession} = useRunIt();
   const [loadedAllItems, setLoadedItems] = useState(false);
   const {setQuery, query, searchResults, setSearchResults} = useSearch();
   const {isMenuVisible, toggleMenu} = useRunHistoryNavBar();
@@ -76,7 +77,7 @@ export default function Screen({}) {
 
   const renderItem = ({ item, index }: any) => {
     return (
-    <HistoryCard result={item} index={index}/>
+        <RunSessionCard result={item} index={index} onDelete={deleteRunSession}/>
   )};
 
   

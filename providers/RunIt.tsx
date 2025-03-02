@@ -49,6 +49,15 @@ const useRunIt = () => {
     }
   }
 
+  const deleteRunSession = async(sessionToDelete: RunSession) => {
+    try {
+        setRunHistory(prev => prev.filter(session => session.id !== sessionToDelete.id))
+        await AsyncStorage.removeItem(sessionToDelete.id);     
+    } catch (error) {
+      console.error('Error deleting run session');
+    }
+  }
+
   const viewRunSession = (appToView: RunSession) => {
     setSelectedRunSession(appToView)
   }
@@ -58,7 +67,8 @@ const useRunIt = () => {
     runHistory,
     saveRunSession,
     setRunHistory,
-    viewRunSession
+    viewRunSession,
+    deleteRunSession
   };
 };
 

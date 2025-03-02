@@ -86,6 +86,7 @@ export interface FooterButtonsProps {
   iconSize?: number;
   opacity?: number,
   disabled?: boolean
+  style?: StyleProp<ViewStyle>
 }
 
 export interface InfoCardProps { 

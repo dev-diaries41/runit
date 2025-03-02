@@ -7,10 +7,11 @@ const IconButton = ({
   icon, 
   iconSize = 24, 
   disabled,
+  style,
   ...rest
 }:IconButtonProps) => {
     return (
-      <TouchableOpacity disabled={disabled} style = {{opacity: disabled? 0.5 : 1}} {...rest}>
+      <TouchableOpacity disabled={disabled} style = {[{opacity: disabled? 0.5 : 1}, style]} {...rest}>
         <Ionicons name={icon} size={iconSize} color={color} />
       </TouchableOpacity>
     );

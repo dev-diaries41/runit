@@ -8,7 +8,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { formatTime } from '@/lib/helpers';
 import Spacer from '@/components/ui/utilities/Spacer';
 import { Button } from '@/components/ui/buttons/Buttons';
-import { useRunIt } from '@/providers/History';
+import { useRunIt } from '@/providers/RunIt';
 
 const {height} = Dimensions.get('window');
 

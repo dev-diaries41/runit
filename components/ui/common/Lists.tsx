@@ -1,8 +1,9 @@
 import React, { useRef } from 'react';
-import { Animated, Dimensions, StyleSheet } from 'react-native';
+import { Animated, Dimensions, StyleSheet, View } from 'react-native';
 import { AnimatedFlashList } from '@shopify/flash-list';
 import {sizes } from '@/constants/layout';
 import { useDurationAnimation } from '@/hooks/useAnimation';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 interface ListProps<T extends Record<string, any>> {
   items: T[];  
@@ -26,7 +27,7 @@ export default function List<T extends Record<string, any>>({
     const {animatedValue} = useDurationAnimation({delay: 100})
 
     return (
-    <Animated.View style={[styles.container, {opacity: animatedValue}]}            >
+    <GestureHandlerRootView style={[styles.container]}            >
         <AnimatedFlashList
             onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
                 useNativeDriver: true,
@@ -44,7 +45,7 @@ export default function List<T extends Record<string, any>>({
             onEndReachedThreshold={0.2}
             showsVerticalScrollIndicator={true}
         />
-    </Animated.View>
+    </GestureHandlerRootView>
     );
 };
 

@@ -24,7 +24,7 @@ export const PaceChart = ({
   
   return (
   <View style={styles.container}>
-  <ThemedText type="subtitle">{title}</ThemedText>
+  <ThemedText style={{padding: 16, marginRight:'auto'}}type="subtitle">{title}</ThemedText>
   <LineChart
     data={{labels, datasets}}
     width={Dimensions.get("window").width}

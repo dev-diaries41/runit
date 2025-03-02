@@ -34,13 +34,17 @@ export function useAnalysis() {
     const averagePace = runHistory.reduce((total, runSession) => total + runSession.pace , 0 ) / runHistory.length;
     const averageTime = runHistory.reduce((total, runSession) => total + runSession.time , 0 ) / runHistory.length;
     const averageCalories = runHistory.reduce((total, runSession) => total + runSession.calories , 0 ) / runHistory.length;
+
+    const maxDistance = runHistory.map(session => session.distance).sort()[runHistory.length -1];
+    const maxPace = runHistory.map(session => session.pace).sort()[runHistory.length -1];
+    const maxTime = runHistory.map(session => session.time).sort()[runHistory.length -1];
+    const maxCalories = runHistory.map(session => session.calories).sort()[runHistory.length -1];  
   
-  
-    const metrics = [
-        { label: 'Avg. Distance', value: averageDistance.toFixed(2) },
-        { label: 'Avg. Pace', value: averagePace.toFixed(2) },
-        { label: 'Avg Time', value: formatTime(averageTime) },
-        { label: 'Avg Calories', value: averageCalories.toFixed(2) },
+    const metrics: {label: string; avg: number; max: number}[] = [
+        { label: 'Distance (km)', avg: parseFloat(averageDistance.toFixed(2)), max: parseFloat(maxDistance.toFixed(2)) },
+        { label: 'Pace (min/km)', avg: parseFloat(averagePace.toFixed(2)), max: parseFloat(maxPace.toFixed(2))},
+        { label: 'Time (mm:ss)', avg: averageTime, max: maxTime },
+        { label: 'Calories (kcal)', avg: Math.round(averageCalories), max: Math.round(maxCalories)  },
       ];
 
 

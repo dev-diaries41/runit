@@ -40,14 +40,14 @@ export default function Screen() {
                 <ThemedText style={[styles.metricLabel, { color: textColor }]}>{metric.label}</ThemedText>
                 
                 <View style={styles.barContainer}>
-                  <View style={[styles.bar, { width: `${avgPercentage}%`, backgroundColor: tintColor }]} />
+                  <View style={[styles.bar, { width: `${avgPercentage}%`, backgroundColor: tintColor, opacity: 0.3 }]} />
                   <ThemedText style={[styles.barValue, { left: `${avgPercentage}%`, color: tintColor }]}>
                     {metric.avg}
                   </ThemedText>
                 </View>
                 
                 <View style={styles.barContainer}>
-                  <View style={[styles.bar, { width: `${maxPercentage}%`, backgroundColor: tintColor, opacity: 0.3 }]} />
+                  <View style={[styles.bar, { width: `${maxPercentage}%`, backgroundColor: tintColor }]} />
                   <ThemedText style={[styles.barValue, { left: `${maxPercentage}%`, color: tintColor }]}>
                     {metric.max}
                   </ThemedText>

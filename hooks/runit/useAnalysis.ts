@@ -35,10 +35,26 @@ export function useAnalysis() {
     const averageTime = runHistory.reduce((total, runSession) => total + runSession.time , 0 ) / runHistory.length;
     const averageCalories = runHistory.reduce((total, runSession) => total + runSession.calories , 0 ) / runHistory.length;
 
-    const maxDistance = runHistory.map(session => session.distance).sort()[runHistory.length -1];
-    const maxPace = runHistory.map(session => session.pace).sort()[runHistory.length -1];
-    const maxTime = runHistory.map(session => session.time).sort()[runHistory.length -1];
-    const maxCalories = runHistory.map(session => session.calories).sort()[runHistory.length -1];  
+    const maxDistance = runHistory
+    .map(session => session.distance)
+    .filter(distance => !isNaN(distance))
+    .sort((a, b) => b - a)[0];
+
+    const maxPace = runHistory
+      .map(session => session.pace)
+      .filter(pace => !isNaN(pace))
+      .sort((a, b) => b - a)[0];
+
+    const maxTime = runHistory
+      .map(session => session.time)
+      .filter(time => !isNaN(time))
+      .sort((a, b) => b - a)[0];
+
+    const maxCalories = runHistory
+      .map(session => session.calories)
+      .filter(calories => !isNaN(calories))
+      .sort((a, b) => b - a)[0];
+    
   
     const metrics: {label: string; avg: number; max: number}[] = [
         { label: 'Distance (km)', avg: parseFloat(averageDistance.toFixed(2)), max: parseFloat(maxDistance.toFixed(2)) },

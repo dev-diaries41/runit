@@ -1,8 +1,6 @@
-import { View, Text, StyleSheet, Dimensions } from 'react-native'
+import { View, StyleSheet, Dimensions } from 'react-native'
 import React from 'react'
-import {
-    LineChart,
-  } from "react-native-chart-kit";
+import {LineChart} from "react-native-chart-kit";
 import { Dataset } from 'react-native-chart-kit/dist/HelperTypes';
 import { ThemedText } from '../common/ThemedText';
 import { AbstractChartConfig } from 'react-native-chart-kit/dist/AbstractChart';
@@ -14,7 +12,6 @@ interface PaceChartProps {
     title?: string;
     chartConfig?: AbstractChartConfig
 }
-
 
 export const PaceChart = ({
     datasets, 
@@ -30,7 +27,7 @@ export const PaceChart = ({
   <ThemedText type="subtitle">{title}</ThemedText>
   <LineChart
     data={{labels, datasets}}
-    width={Dimensions.get("window").width} // from react-native
+    width={Dimensions.get("window").width}
     height={220}
     yAxisInterval={1} // optional, defaults to 1
     chartConfig={{

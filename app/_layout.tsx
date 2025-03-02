@@ -11,7 +11,7 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 import { SettingsProvider } from '@/providers/Settings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {RunSession, Settings } from '@/types';
-import { Colors } from '@/constants/Colors';
+import { Colors } from '@/constants/colors';
 import { GlobalMenuActionsProvider } from '@/providers/Globals';
 import { RunItProvider } from '@/providers/History';
 import { fetchAsyncStorageBatch } from '@/lib/storage';

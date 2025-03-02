@@ -4,7 +4,7 @@ import { Platform, View, StyleSheet } from 'react-native';
 import { HapticTab } from '@/components/ui/common/HapticTab';
 import { IconSymbol } from '@/components/ui/common/IconSymbol';
 import TabBarBackground from '@/components/ui/common/TabBarBackground';
-import { Colors } from '@/constants/Colors';
+import { Colors } from '@/constants/colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import NavBar from '@/components/ui/common/NavBars';
 // import { useGlobalMenuActions } from '@/providers/Globals';

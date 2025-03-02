@@ -4,7 +4,7 @@ import Spacer from './Spacer';
 import { sizes, themes } from '@/constants/layout';
 import { LoaderProps } from '@/types';
 import IconButton from '../buttons/IconButton';
-import { Colors } from '@/constants/Colors';
+import { Colors } from '@/constants/colors';
 import { useThemeColor } from '@/hooks/useThemeColor';
 
 const Divider = ({

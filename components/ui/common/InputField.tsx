@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, TextInput } from 'react-native';
 import { themes, sizes } from '@/constants/layout';
 import { InputFieldProps } from '@/types';
 import { useThemeColor } from '@/hooks/useThemeColor';
-import { Colors } from '@/constants/Colors';
+import { Colors } from '@/constants/colors';
 import { ThemedText } from '@/components/ui/common/ThemedText';
 
 const InputField = React.memo(

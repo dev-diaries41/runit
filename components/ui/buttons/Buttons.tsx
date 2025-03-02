@@ -4,7 +4,7 @@ import { themes, sizes } from '@/constants/layout';
 import { Ionicons } from '@expo/vector-icons';
 import { ButtonProps, GradientButtonProps, LinkButtonProps } from '@/types';
 import { Link } from 'expo-router';
-import { Colors } from '@/constants/Colors';
+import { Colors } from '@/constants/colors';
 
  export const GradientButton  = ({ 
   loading, 

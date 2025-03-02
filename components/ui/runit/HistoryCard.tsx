@@ -4,9 +4,9 @@ import { themes, sizes } from '@/constants/layout';
 import { RunSession } from '@/types';
 import { Link } from 'expo-router';
 import { useThemeColor } from '@/hooks/useThemeColor';
-import { Colors } from '@/constants/Colors';
 import { ThemedText } from '@/components/ui/common/ThemedText';
 import { formatTime } from '@/lib/helpers';
+import IconButton from '../buttons/IconButton';
 
 const { height } = Dimensions.get('screen');
 const ITEM_HEIGHT = height / 8 - (sizes.layout.medium);
@@ -23,21 +23,20 @@ const HistoryCard = React.memo(({
   const {name, distance, time } = result;
   const cardColor = useThemeColor({}, 'card') 
   const iconColor = useThemeColor({}, 'icon') 
+  const borderColor = useThemeColor({}, "border") 
 
   return (
     <Link style ={{marginBottom: sizes.layout.small}} href={{pathname: '/metrics', params: {...result, mode: 'VIEW'}}}>
-      <View  style={[styles.cardContainer, { backgroundColor:cardColor, borderColor: Colors.common.border}]}>
-        {/* <View style={[styles.rowContainer, { justifyContent: 'space-between', marginLeft:'auto'}]}>
-          <View style={styles.navRowItems}>
+      <View  style={[styles.cardContainer, { backgroundColor:cardColor, borderColor}]}>
+        <View style={[styles.rowContainer, { justifyContent: 'space-between', marginBottom: sizes.layout.small}]}>
+          <ThemedText type="defaultSemiBold" style={{marginRight:'auto'}}>🗓️ {name.replace("Run", "").trim()}</ThemedText>
+          <View style={[styles.navRowItems]}>
             <IconButton iconSize={18} icon={"ellipsis-vertical"} onPress={()=>{}} color={iconColor}/>
           </View>
-        </View> */}
-        <View style={[styles.appTextContainer, {marginBottom: sizes.layout.small, opacity: 0.8}]}>
-          <ThemedText type="subtitle">{name}</ThemedText>
         </View>
         <View style={[styles.appTextContainer]}>
-          <ThemedText>📏 Distance: {distance.toFixed(2)} km</ThemedText>
-          <ThemedText>⏱ Time: {formatTime(time)}</ThemedText>
+          <ThemedText style={{opacity: 0.8}}>⏱ Time: {formatTime(time)}</ThemedText>
+          <ThemedText style={{opacity: 0.8}}>📏 Distance: {distance.toFixed(2)} km</ThemedText>
         </View>
       </View>
     </Link>
@@ -51,7 +50,7 @@ const styles = StyleSheet.create({
     minHeight: ITEM_HEIGHT,
     padding: sizes.layout.medium,
     borderRadius: sizes.layout.medium,
-    borderBottomColor: themes.borderColor,
+    borderWidth: 1
   },
   tag: {
     fontSize: sizes.font.small,
@@ -66,9 +65,9 @@ const styles = StyleSheet.create({
   appTextContainer:{
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent:'space-between',
-    gap: sizes.layout.xSmall,
-    padding: sizes.layout.xSmall
+    justifyContent: "flex-start",
+    gap: sizes.layout.medium,
+    paddingVertical: sizes.layout.xSmall
   },
   navRowItems:{
     flexDirection: 'row', 

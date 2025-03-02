@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, Modal } from 'reac
 import { sizes, themes } from '@/constants/layout';
 import { Theme } from '@/types';
 import { useThemeColor } from '@/hooks/useThemeColor';
-import { Colors } from '@/constants/Colors';
+import { Colors } from '@/constants/colors';
 
 interface DialogueAlertProps {
   visible: boolean;

@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/buttons/Buttons';
 import { useRouter } from 'expo-router';
 import { useLocation } from '@/hooks/runit/useLocation';
 import { useMetrics } from '@/hooks/runit/useMetrics';
+import { sendNotification } from '@/lib/notifications';
 
 const {height} = Dimensions.get('window');
 
@@ -22,6 +23,7 @@ export default function Screen() {
     if(runSession){
       resetRunSession();
     }
+    sendNotification('Run in progress', `You started your run at ${new Date().toLocaleTimeString()}`)
     await start()
   }
 
@@ -29,6 +31,7 @@ export default function Screen() {
 const handleStopRun = async () => {
   await stop();
   updateRunSession();
+  sendNotification('Run stopped', `You stopped your run at ${new Date().toLocaleTimeString()}`)
 };
 
 const handleReset = async () => {

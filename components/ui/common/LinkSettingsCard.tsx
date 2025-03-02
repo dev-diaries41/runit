@@ -8,8 +8,7 @@ import { useThemeColor } from '@/hooks/useThemeColor';
 const LinkSettingsCard = ({
   settingDescription, 
   settingTitle, 
-  updateType
-}: LinkSettingsCardProps & {updateType?: string}) => {
+}: LinkSettingsCardProps) => {
 
   const color = useThemeColor({}, 'text') 
   const iconColor = useThemeColor({}, 'icon') 
@@ -28,7 +27,7 @@ const LinkSettingsCard = ({
   }
 
     return( 
-      <Link href={{pathname: "/(tabs)/(settings)/update", params:{updateType}}}>
+      <Link href={{pathname: "/(tabs)/(settings)/update", params:{updateType: settingTitle}}}>
           <View style={{flexDirection: "column", marginBottom: sizes.layout.small}}>
             <View style={styles.settingsRow}>
               <View style={{flexDirection:'row', gap: sizes.layout.small, alignItems:'center'}}>

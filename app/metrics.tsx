@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, StatusBar, Dimensions } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, TextInput, StatusBar } from 'react-native';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import ParallaxScrollView from '@/components/ui/common/ParallaxScrollView';
 import { ThemedView } from '@/components/ui/common/ThemedView';
@@ -7,10 +7,8 @@ import { sizes } from '@/constants/layout';
 import { useLocalSearchParams } from 'expo-router';
 import { formatTime } from '@/lib/helpers';
 import Spacer from '@/components/ui/utilities/Spacer';
-import { Button } from '@/components/ui/buttons/Buttons';
 import { useRunIt } from '@/providers/RunIt';
 
-const {height} = Dimensions.get('window');
 
 export default function Screen() {
   const params = useLocalSearchParams();
@@ -18,7 +16,7 @@ export default function Screen() {
   
   const [runName, setRunName] = useState(name as string);
   const [hasSaved, setHasSaved] = useState(false);
-  const {saveRunSession} = useRunIt()
+  const {saveRunSession} = useRunIt();
 
   const textColor = useThemeColor({}, 'text');
   const tintColor = useThemeColor({}, 'tint');
@@ -41,6 +39,14 @@ export default function Screen() {
     setHasSaved(true);
   }
 
+  useEffect(() => {
+    const shouldSave = mode !== "VIEW" && !hasSaved && parseFloat(distance as string) > 0
+    if(shouldSave){
+      handleSave();
+    }
+
+  }, [mode, hasSaved, pace, calories, distance, time, name, id])
+
   return (
     <ParallaxScrollView headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}>
       <ThemedView style={styles.container}>
@@ -61,13 +67,6 @@ export default function Screen() {
           ))}
         </View>
       </ThemedView>
-      {mode !== "VIEW" && ( 
-        <Button
-          disabled={hasSaved}
-          style={{width: "50%", marginTop: height * 0.1}}
-          onPress={handleSave} 
-          text='Save metrics'/>
-      )}
     </ParallaxScrollView>
   );
 }

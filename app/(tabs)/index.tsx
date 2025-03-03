@@ -39,11 +39,18 @@ const handleReset = async () => {
   resetRunSession();
 };
 
+const handleEndRun = async () => {
+  router.push({pathname: '/metrics', params: {...runSession}}) 
+  setTimeout(() => handleReset(), 1000);
+};
+
+
   
   return (
     <ParallaxScrollView headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}>
+      {distance > 0 && <ThemedText style={styles.distanceOverview}>Distance: {distance} km</ThemedText>}
       <ThemedView style={styles.container}>
-        <ThemedText style={[styles.title]}>{isRunning? "Run in progress 🏃🏿‍♂️‍➡️" : "Start run"}
+        <ThemedText type='title'>{isRunning? "Run in progress 🏃🏿‍♂️‍➡️" : "Start run"}
         </ThemedText>
         <Stopwatch
           elapsedTime={elapsedTime}
@@ -57,8 +64,8 @@ const handleReset = async () => {
         {runSession && (
         <Button
           style={{width: "50%"}}
-          onPress={()=>router.push({pathname: '/metrics', params: {...runSession}})} 
-          text='View metrics'/>
+          onPress={handleEndRun} 
+          text='End run'/>
       )}
       </ThemedView>
     </ParallaxScrollView>
@@ -74,10 +81,11 @@ const styles = StyleSheet.create({
     gap: sizes.layout.medium,
     paddingTop: height/6
   },
-  title: {
-    fontSize: sizes.font.xxLarge,
-    justifyContent:"center",
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
+  distanceOverview:{
+    position: 'absolute', 
+    top: 48, 
+    zIndex: 2, 
+    right: 8,
+    fontSize: sizes.font.small
+  }
 });

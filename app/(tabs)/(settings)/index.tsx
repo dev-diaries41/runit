@@ -14,7 +14,6 @@ export default function SettingsScreen() {
   const cardColor = useThemeColor({}, 'card') 
 
   
-// Define the settings configuration array
 const settingsConfig = [
   {
     settingTitle: 'Weight',
@@ -50,9 +49,9 @@ const settingsConfig = [
         </ThemedView>
         <ThemedView style={styles.appInfoContainer}>
           <Image source={require('../../../assets/images/runit.png')} style={styles.logo} resizeMode="contain"/>
-          <ThemedText type='title'>RunIt</ThemedText>
-          <ThemedText>Version: 1.1.5</ThemedText>
-          <ThemedText>© 2025 FPF Labs</ThemedText>
+          <ThemedText type='subtitle'  style={{marginBottom: sizes.layout.medium}}>RunIt</ThemedText>
+          <ThemedText style={{fontSize: sizes.font.small}}>Version: 1.1.5</ThemedText>
+          <ThemedText style={{fontSize: sizes.font.small}}>© 2025 FPF Labs</ThemedText>
         </ThemedView>
       </ParallaxScrollView>
   );
@@ -66,7 +65,8 @@ const styles = StyleSheet.create({
     borderRadius: sizes.layout.medium,
   },
   appInfoContainer: {
-    marginTop: 'auto',
+    marginTop: sizes.layout.xxLarge * 2,
+    marginBottom: sizes.layout.medium,
     justifyContent: 'center',
     alignItems: 'center',
   },

@@ -3,23 +3,25 @@ import NavBar from '@/components/ui/common/NavBars';
 import { TextInputProps } from 'react-native';
 import { useNavigation } from 'expo-router';
 
-export const useRunHistoryNavBar = () => {
+export const useRunHistoryNavBar = ({viewCharts}: {viewCharts: () => void}) => {
   const navigation = useNavigation();
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   const toggleMenu = () => setIsMenuVisible(prev => !prev);
 
   const headerRightButtonsHistoryScreen = [
-    { icon: 'menu', onPress: toggleMenu },
+    // { icon: 'menu', onPress: toggleMenu },
+    {icon: 'bar-chart', onPress: viewCharts},
+
   ];
 
-  const HeaderLeft = () => (
+  const HeaderRight = () => (
     <NavBar navItems={headerRightButtonsHistoryScreen}/>
   )
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerLeft: HeaderLeft
+      headerRight: HeaderRight
     });
   }, []);
 

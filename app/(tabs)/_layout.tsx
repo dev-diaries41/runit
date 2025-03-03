@@ -16,7 +16,7 @@ export default function TabLayout() {
   // const { toggleMenu, menuItems, showMenu } = useGlobalMenuActions(); // Ensure you have a state for menu open/close
 
   const headerRightButtonsHistoryScreen = [
-    { icon: 'menu', onPress: () => {} },
+    {icon: 'bar-chart', onPress: ()=>{}},
   ];
 
   return (
@@ -50,7 +50,7 @@ export default function TabLayout() {
             title: 'Run History',
             // headerTitle: '',
             headerSearchBarOptions:{autoFocus: true},
-            headerLeft: () => <NavBar navItems={headerRightButtonsHistoryScreen} />,
+            headerRight: () => <NavBar navItems={headerRightButtonsHistoryScreen} />,
             tabBarIcon: ({ color }) => <IconSymbol size={28} name="figure.run" color={color} />,
           }}
         />

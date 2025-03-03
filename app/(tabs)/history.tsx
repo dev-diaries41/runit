@@ -6,14 +6,12 @@ import useSearch from '@/hooks/useSearch';
 import EmptyScreen from '@/components/ui/common/EmptyScreen';
 import List from '@/components/ui/common/Lists';
 import { useRunIt } from '@/providers/RunIt';
-import { MenuItem, RunSession } from '@/types';
+import { RunSession } from '@/types';
 import RunSessionCard from '@/components/ui/runit/RunSessionCard';
 import { fetchAsyncStorageBatch } from '@/lib/storage';
 import { ThemedView } from '@/components/ui/common/ThemedView';
 import { useRunHistoryNavBar, useSearchBar } from '@/hooks/useNavBar';
-import { Menu } from '@/components/ui/common/Menu';
 import { useRouter } from 'expo-router';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const BATCH_SIZE = 50;
 const {height} = Dimensions.get('window')
@@ -22,8 +20,13 @@ export default function Screen({}) {
   const {runHistory, setRunHistory, deleteRunSession} = useRunIt();
   const [loadedAllItems, setLoadedItems] = useState(false);
   const {setQuery, query, searchResults, setSearchResults} = useSearch();
-  const {isMenuVisible, toggleMenu} = useRunHistoryNavBar();
   const router = useRouter();
+
+  const viewCharts = () => {
+    router.push('/analysis');
+  }
+
+  useRunHistoryNavBar({viewCharts});
 
   const handleSearch = (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
     try {
@@ -48,16 +51,6 @@ export default function Screen({}) {
     onChangeText: handleSearch,
     onClose: handleCancelSearch
   })
-
-  const viewCharts = () => {
-    toggleMenu();
-    router.push('/analysis');
-  }
-
-  const menuItems:MenuItem[] = [
-    {icon: 'bar-chart', name: 'Performance analysis', onPress: viewCharts},
-    {icon: 'share', name: 'Export data', onPress: toggleMenu}
-  ]
 
   const loadMoreItems = async () => {
     if(loadedAllItems)return;
@@ -94,7 +87,6 @@ export default function Screen({}) {
 
   return (
     <ThemedView style={[styles.container]}>
-        {isMenuVisible && <View style={styles.overlay} />}  
       <ParallaxScrollView
       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}>  
         <ThemedView style={styles.runHistoryContainer}>
@@ -107,9 +99,6 @@ export default function Screen({}) {
           />
         </ThemedView>   
       </ParallaxScrollView>
-      <View style={styles.menuContainer}>
-        <Menu menuItems={menuItems} isVisible={isMenuVisible} toggleMenu={toggleMenu}/>
-      </View>
     </ThemedView>
   );
   
@@ -142,9 +131,9 @@ const styles = StyleSheet.create({
     right:0,
   },
   overlay: {
-    ...StyleSheet.absoluteFillObject, // Covers the entire parent view
-    backgroundColor: 'rgba(0, 0, 0, 0.3)', // Dark semi-transparent overlay
-    zIndex: 2, // Ensure it overlays content but below the menu
+    ...StyleSheet.absoluteFillObject, 
+    backgroundColor: 'rgba(0, 0, 0, 0.7)', 
+    zIndex: 20, 
   },
   
 });

@@ -13,13 +13,50 @@ export default function Screen() {
   const tintColor = useThemeColor({}, 'tint');
   const { labels, metrics, datasets } = useAnalysis();
 
+  const PerformanceSummary = ({performanceSummary}: {performanceSummary:  {
+    label: string;
+    avg: number;
+    max: number;
+}[]} ) => {
+    return (
+      <View style={styles.metricsContainer}>
+      {performanceSummary.map((metric, index) => {
+        const avgPercentage = (metric.avg / metric.max) * 100;
+        const maxPercentage = 100; // Max value is always 100%
+        return (
+          <View key={index} style={styles.metricItem}>
+            <ThemedText style={[styles.metricLabel, { color: textColor }]}>{metric.label}</ThemedText>
+            
+            <View style={styles.barContainer}>
+              <View style={[styles.bar, { width: `${maxPercentage}%`, backgroundColor: tintColor }]} />
+              <ThemedText style={[styles.barValue, { left: `${maxPercentage}%`, color: tintColor }]}>
+                {metric.max}
+              </ThemedText>
+            </View>
+
+            <View style={styles.barContainer}>
+              <View style={[styles.bar, { width: `${avgPercentage}%`, backgroundColor: tintColor, opacity: 0.3 }]} />
+              <ThemedText style={[styles.barValue, { left: `${avgPercentage}%`, color: tintColor }]}>
+                {metric.avg}
+              </ThemedText>
+            </View>
+
+            <View style={styles.barLabels}>
+              <ThemedText style={[styles.metricValue, { color: textColor }]}>Max:  {metric.label.includes('Time')? formatTime(metric.max): metric.max}</ThemedText>
+              <ThemedText style={[styles.metricValue, { color: textColor }]}>Average: {metric.label.includes('Time')? formatTime(metric.avg): metric.avg}</ThemedText>
+            </View>
+          </View>
+        );
+      })}
+    </View>
+    )
+  }
+
   return (
     <ParallaxScrollView headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}>
       <ThemedView style={styles.container}>
         <PaceChart labels={labels} datasets={datasets} title='Run Pace (min/km)' />
-        
         <ThemedText type="subtitle" style={[styles.subtitle, { color: textColor }]}>Performance Summary</ThemedText>
-
         <View style={styles.legendContainer}>
           <View style={styles.legendItem}>
             <View style={[styles.legendSquare, { backgroundColor: tintColor }]} />
@@ -30,37 +67,7 @@ export default function Screen() {
             <ThemedText style={[styles.legendText, { color: textColor }]}>Average</ThemedText>
           </View>
         </View>
-
-        <View style={styles.metricsContainer}>
-          {metrics.map((metric, index) => {
-            const avgPercentage = (metric.avg / metric.max) * 100;
-            const maxPercentage = 100; // Max value is always 100% by definition
-            return (
-              <View key={index} style={styles.metricItem}>
-                <ThemedText style={[styles.metricLabel, { color: textColor }]}>{metric.label}</ThemedText>
-                
-                <View style={styles.barContainer}>
-                  <View style={[styles.bar, { width: `${avgPercentage}%`, backgroundColor: tintColor, opacity: 0.3 }]} />
-                  <ThemedText style={[styles.barValue, { left: `${avgPercentage}%`, color: tintColor }]}>
-                    {metric.avg}
-                  </ThemedText>
-                </View>
-                
-                <View style={styles.barContainer}>
-                  <View style={[styles.bar, { width: `${maxPercentage}%`, backgroundColor: tintColor }]} />
-                  <ThemedText style={[styles.barValue, { left: `${maxPercentage}%`, color: tintColor }]}>
-                    {metric.max}
-                  </ThemedText>
-                </View>
-
-                <View style={styles.barLabels}>
-                  <ThemedText style={[styles.metricValue, { color: textColor }]}>Avg: {metric.label.includes('Time')? formatTime(metric.avg): metric.avg}</ThemedText>
-                  <ThemedText style={[styles.metricValue, { color: textColor }]}>Max:  {metric.label.includes('Time')? formatTime(metric.max): metric.max}</ThemedText>
-                </View>
-              </View>
-            );
-          })}
-        </View>
+        <PerformanceSummary performanceSummary={metrics}/>
       </ThemedView>
     </ParallaxScrollView>
   );
@@ -72,7 +79,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: sizes.layout.small,
-    paddingTop: StatusBar.currentHeight ? StatusBar.currentHeight * 2 : sizes.layout.xxLarge,
+    paddingTop: StatusBar.currentHeight ? StatusBar.currentHeight * 1.25 : sizes.layout.xxLarge,
   },
   subtitle: {
     marginVertical: sizes.layout.medium,
@@ -114,11 +121,11 @@ const styles = StyleSheet.create({
   barContainer: {
     flexDirection: 'row',
     width: '100%',
-    height: 10,  // Thinner height for a skinnier bar
+    height: 10,
     borderRadius: 10,
     overflow: 'hidden',
     marginBottom: sizes.layout.xSmall,
-    position: 'relative',  // Important for positioning the value labels
+    position: 'relative',
   },
   bar: {
     height: '100%',
@@ -126,7 +133,7 @@ const styles = StyleSheet.create({
   },
   barValue: {
     position: 'absolute',
-    top: -20,  // Slightly above the bar to make it visible
+    top: -20,
     fontSize: sizes.font.small,
     fontWeight: 'bold',
   },

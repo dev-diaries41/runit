@@ -2,7 +2,7 @@
   "expo": {
     "name": "RunIt",
     "slug": "runit",
-    "version": "1.1.4",
+    "version": "1.1.5",
     "orientation": "portrait",
     "icon": "./assets/images/runit-icon.png",
     "scheme": "runit",
@@ -47,6 +47,12 @@
         "expo-notifications",
         {
           "color": "#ffffff"
+        }
+      ],
+      [
+        "expo-document-picker",
+        {
+          "iCloudContainerEnvironment": "Production"
         }
       ]
     ],

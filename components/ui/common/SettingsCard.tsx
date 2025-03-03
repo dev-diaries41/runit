@@ -20,7 +20,7 @@ const SettingsCard = ({
     switch(settingTitle){
       case 'Weight':
         return 'scale'
-      case 'Backup':
+      case 'Export':
         return 'archive'
       case 'System prompt':
         return 'terminal-sharp'

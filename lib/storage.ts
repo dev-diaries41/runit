@@ -3,7 +3,7 @@ import { shareAsync } from 'expo-sharing'
 import { Platform, Share } from 'react-native';
 import * as SecureStore from 'expo-secure-store'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Settings, File, NewFile } from '@/types';
+import { Settings, File, NewFile, RunSession } from '@/types';
 import CryptoJS from "react-native-crypto-js";
 import * as Crypto from 'expo-crypto'
 import { DefaultSettings } from '@/constants/globals';
@@ -182,3 +182,11 @@ export const fetchAsyncStorageBatch = async <T = any>(batchSize: number, filterC
     
   return {retrievedItems, batchKeysLength: newBatchKeys.length}
 };
+
+export const backup = async() => {
+  const {retrievedItems} = await fetchAsyncStorageBatch<RunSession>(Infinity, key => key.includes("run"));
+  const runHistory = JSON.stringify(retrievedItems);
+  await saveNewFile({filename: 'notes_backup', content: runHistory, mimetype:'application/json', writingOptions:{
+      encoding: FileSystem.EncodingType.UTF8,
+  }})
+}

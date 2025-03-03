@@ -51,45 +51,43 @@ const RunSessionCard = React.memo(({ result, index, onDelete }: RunSessionCardPr
   };
 
   return (
-    <View style={{ marginBottom: sizes.layout.small }}>
-      <Pressable onPress={handlePress}>
-        <View style={[styles.container, { borderRadius: sizes.layout.medium }]}>
-          {/* Delete Button is positioned behind the animated card */}
-          <View style={styles.deleteButton}>
-            <IconButton onPress={handleDelete} icon={'trash'} color='white' style={{marginLeft:'auto', marginRight: 20}}/>
-          </View>
-          {/* Use GestureDetector to attach the pan gesture */}
-          <GestureDetector gesture={panGesture}>
-            <Animated.View
-              style={[
-                styles.cardContainer,
-                { backgroundColor: cardColor, borderColor },
-                animatedStyle as {
-                  transform: {
-                      translateX: number;
-                  }[];
-              },
-                styles.animatedCard,
-              ]}
-            >
-              <View style={styles.rowContainer}>
-                <ThemedText type="defaultSemiBold">
-                  🗓️ {name.replace('Run', '').trim()}
-                </ThemedText>
-              </View>
-              <View style={styles.appTextContainer}>
-                <ThemedText style={{ opacity: 0.8 }}>
-                  ⏱ Time: {formatTime(time)}
-                </ThemedText>
-                <ThemedText style={{ opacity: 0.8 }}>
-                  📏 Distance: {distance.toFixed(2)} km
-                </ThemedText>
-              </View>
-            </Animated.View>
-          </GestureDetector>
+    <Pressable onPress={handlePress} style={{ marginBottom: sizes.layout.small }}>
+      <View style={[styles.container, { borderRadius: sizes.layout.medium }]}>
+        {/* Delete Button is positioned behind the animated card */}
+        <View style={styles.deleteButton}>
+          <IconButton onPress={handleDelete} icon={'trash'} color='white' style={{marginLeft:'auto', marginRight: 20}}/>
         </View>
-      </Pressable>
-    </View>
+        {/* Use GestureDetector to attach the pan gesture */}
+        <GestureDetector gesture={panGesture}>
+          <Animated.View
+            style={[
+              styles.cardContainer,
+              { backgroundColor: cardColor, borderColor },
+              animatedStyle as {
+                transform: {
+                    translateX: number;
+                }[];
+            },
+              styles.animatedCard,
+            ]}
+          >
+            <View style={styles.rowContainer}>
+              <ThemedText type="defaultSemiBold">
+                🗓️ {name.replace('Run', '').trim()}
+              </ThemedText>
+            </View>
+            <View style={styles.appTextContainer}>
+              <ThemedText style={{ opacity: 0.8 }}>
+                ⏱ Time: {formatTime(time)}
+              </ThemedText>
+              <ThemedText style={{ opacity: 0.8 }}>
+                📏 Distance: {distance.toFixed(2)} km
+              </ThemedText>
+            </View>
+          </Animated.View>
+        </GestureDetector>
+      </View>
+    </Pressable>
   );
 });
 

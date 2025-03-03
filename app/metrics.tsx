@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TextInput, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, TextInput } from 'react-native';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import ParallaxScrollView from '@/components/ui/common/ParallaxScrollView';
 import { ThemedView } from '@/components/ui/common/ThemedView';
@@ -76,9 +76,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: sizes.layout.small,
-    paddingTop: StatusBar.currentHeight? StatusBar.currentHeight * 2 : sizes.layout.xxLarge,
-    
   },
   title: {
     fontSize: sizes.font.xLarge,

@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
 import ParallaxScrollView from '@/components/ui/common/ParallaxScrollView';
 import Stopwatch from '@/components/ui/utilities/Stopwatch';
 import { ThemedView } from '@/components/ui/common/ThemedView';
@@ -10,8 +10,6 @@ import { useRouter } from 'expo-router';
 import { useLocation } from '@/hooks/runit/useLocation';
 import { useMetrics } from '@/hooks/runit/useMetrics';
 import { sendNotification } from '@/lib/notifications';
-
-const {height} = Dimensions.get('window');
 
 export default function Screen() {
   const { elapsedTime, isRunning, start, stop, reset } = useStopwatch();
@@ -77,9 +75,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: sizes.layout.medium,
+    paddingTop: sizes.layout.medium,
     gap: sizes.layout.medium,
-    paddingTop: height/6
   },
   distanceOverview:{
     position: 'absolute', 

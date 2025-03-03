@@ -50,7 +50,7 @@ const settingsConfig = [
         <ThemedView style={styles.appInfoContainer}>
           <Image source={require('../../../assets/images/runit.png')} style={styles.logo} resizeMode="contain"/>
           <ThemedText type='subtitle'  style={{marginBottom: sizes.layout.medium}}>RunIt</ThemedText>
-          <ThemedText style={{fontSize: sizes.font.small}}>Version: 1.1.5</ThemedText>
+          <ThemedText style={{fontSize: sizes.font.small}}>Version: 1.1.6</ThemedText>
           <ThemedText style={{fontSize: sizes.font.small}}>© 2025 FPF Labs</ThemedText>
         </ThemedView>
       </ParallaxScrollView>
@@ -60,8 +60,6 @@ const settingsConfig = [
 const styles = StyleSheet.create({
   container: {
     flex:1,
-    marginTop: sizes.layout.xxLarge * 2,
-    paddingTop: sizes.layout.medium,
     borderRadius: sizes.layout.medium,
   },
   appInfoContainer: {

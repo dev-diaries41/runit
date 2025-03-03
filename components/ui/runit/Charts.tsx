@@ -24,7 +24,7 @@ export const PaceChart = ({
   
   return (
   <View style={styles.container}>
-  <ThemedText style={{padding: 16, marginRight:'auto'}}type="subtitle">{title}</ThemedText>
+  <ThemedText style={{paddingHorizontal: 16, marginBottom: 16, marginRight:'auto'}}type="subtitle">{title}</ThemedText>
   <LineChart
     data={{labels, datasets}}
     width={Dimensions.get("window").width}
@@ -64,6 +64,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: sizes.layout.small,
   },
 });

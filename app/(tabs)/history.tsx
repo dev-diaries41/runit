@@ -120,8 +120,7 @@ const styles = StyleSheet.create({
   runHistoryContainer:{
     flex:1,
     height: '100%',
-    minHeight: height - sizes.layout.xxLarge,
-    paddingTop: sizes.layout.xxLarge * 2,
+    minHeight: height/2,
   },
 
   menuContainer: {

@@ -1,4 +1,4 @@
-import { StyleSheet, StatusBar, View } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import ParallaxScrollView from '@/components/ui/common/ParallaxScrollView';
 import { ThemedView } from '@/components/ui/common/ThemedView';
 import { sizes } from '@/constants/layout';
@@ -78,8 +78,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: sizes.layout.small,
-    paddingTop: StatusBar.currentHeight ? StatusBar.currentHeight * 1.25 : sizes.layout.xxLarge,
+    marginBottom: 80
+    
   },
   subtitle: {
     marginVertical: sizes.layout.medium,
@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
     fontSize: sizes.font.small,
   },
   metricsContainer: {
+    flex:1,
     width: '100%',
     paddingHorizontal: sizes.layout.small,
     marginTop: sizes.layout.medium,

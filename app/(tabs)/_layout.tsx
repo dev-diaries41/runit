@@ -1,19 +1,15 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
-import { Platform, View, StyleSheet } from 'react-native';
+import { Platform } from 'react-native';
 import { HapticTab } from '@/components/ui/common/HapticTab';
 import { IconSymbol } from '@/components/ui/common/IconSymbol';
 import TabBarBackground from '@/components/ui/common/TabBarBackground';
-import { Colors } from '@/constants/colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
 import NavBar from '@/components/ui/common/NavBars';
-// import { useGlobalMenuActions } from '@/providers/Globals';
-// import { Menu } from '@/components/ui/common/Menu';
+import { useThemeColor } from '@/hooks/useThemeColor';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-  
-  // const { toggleMenu, menuItems, showMenu } = useGlobalMenuActions(); // Ensure you have a state for menu open/close
+  const backgroundColor = useThemeColor({}, 'background')
+  const tintColor = useThemeColor({}, 'tint')
 
   const headerRightButtonsHistoryScreen = [
     {icon: 'bar-chart', onPress: ()=>{}},
@@ -23,7 +19,7 @@ export default function TabLayout() {
     <>
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+          tabBarActiveTintColor: tintColor,
           headerShown: true,
           headerTransparent: true,
           tabBarButton: HapticTab,
@@ -40,6 +36,10 @@ export default function TabLayout() {
           name="index"
           options={{
             title: 'Home',
+            headerShown: true,
+            headerTransparent: false,
+            headerShadowVisible: false,
+            headerStyle: {backgroundColor}, 
             tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
           }}
         />
@@ -48,7 +48,10 @@ export default function TabLayout() {
           name="history"
           options={{
             title: 'Run History',
-            // headerTitle: '',
+            headerShown: true,
+            headerTransparent: false,
+            headerShadowVisible: false,
+            headerStyle: {backgroundColor}, 
             headerSearchBarOptions:{autoFocus: true},
             headerRight: () => <NavBar navItems={headerRightButtonsHistoryScreen} />,
             tabBarIcon: ({ color }) => <IconSymbol size={28} name="figure.run" color={color} />,
@@ -59,25 +62,14 @@ export default function TabLayout() {
           name="(settings)"
           options={{
             title: 'Settings',
+            headerShown: true,
+            headerTransparent: false,
+            headerShadowVisible: false,
+            headerStyle: {backgroundColor}, 
             tabBarIcon: ({ color }) => <IconSymbol size={28} name="gear" color={color} />,
           }}
         />
       </Tabs>
-
-      {/* Global Bottom Sheet, rendered outside of the individual screens */}
-      {/* <View style={styles.bottomSheetContainer}>
-        <Menu menuItems={menuItems} isVisible={showMenu} toggleMenu={toggleMenu}/>
-      </View> */}
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  bottomSheetContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    zIndex: 999, 
-  },
-});

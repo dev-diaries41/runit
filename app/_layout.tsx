@@ -15,12 +15,15 @@ import { Colors } from '@/constants/colors';
 import { GlobalMenuActionsProvider } from '@/providers/Globals';
 import { RunItProvider } from '@/providers/RunIt';
 import { fetchAsyncStorageBatch } from '@/lib/storage';
+import { useThemeColor } from '@/hooks/useThemeColor';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
+  const backgroundColor = useThemeColor({}, 'background')
+  
   const [storedSettings, setStoredSettings] = useState<Settings|null>(null);
   const [storedExcerciseHistory, setStoredExcerciseHistory] = useState<RunSession[]>([])
   const [appIsReady, setAppIsReady] = useState(false);
@@ -78,8 +81,16 @@ export default function RootLayout() {
       <RunItProvider storedExcerciseHistory={storedExcerciseHistory}>
         <Stack initialRouteName='(tabs)'>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="metrics" options={{ headerShown: true, headerTitle:'', headerTransparent: true }} />
-          <Stack.Screen name="analysis" options={{ headerShown: true, headerTitle:'', headerTransparent: true }} />
+          <Stack.Screen name="metrics" options={{ headerShown: true, headerTitle:'',
+            headerTransparent: false,
+            headerShadowVisible: false,
+            headerStyle: {backgroundColor}, 
+            }} />
+          <Stack.Screen name="analysis" options={{ headerShown: true, headerTitle:'',
+            headerTransparent: false,
+            headerShadowVisible: false,
+            headerStyle: {backgroundColor},
+            }} />
           <Stack.Screen name="+not-found" />
         </Stack>
         <StatusBar style="auto" />

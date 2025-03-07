@@ -43,7 +43,7 @@ export function useAnalysis() {
     const maxPace = runHistory
       .map(session => session.pace)
       .filter(pace => !isNaN(pace))
-      .sort((a, b) => b - a)[0];
+      .sort((a, b) => b - a)[runHistory.length -1]; // lowest pace is best performance
 
     const maxTime = runHistory
       .map(session => session.time)
@@ -56,11 +56,11 @@ export function useAnalysis() {
       .sort((a, b) => b - a)[0];
     
   
-    const metrics: {label: string; avg: number; max: number}[] = [
-        { label: 'Distance (km)', avg: parseFloat(averageDistance.toFixed(2)), max: parseFloat(maxDistance.toFixed(2)) },
-        { label: 'Pace (min/km)', avg: parseFloat(averagePace.toFixed(2)), max: parseFloat(maxPace.toFixed(2))},
-        { label: 'Time (mm:ss)', avg: averageTime, max: maxTime },
-        { label: 'Calories (kcal)', avg: Math.round(averageCalories), max: Math.round(maxCalories)  },
+    const metrics: {label: string; avg: number; peak: number}[] = [
+        { label: 'Distance (km)', avg: parseFloat(averageDistance.toFixed(2)), peak: parseFloat(maxDistance.toFixed(2)) },
+        { label: 'Pace (min/km)', avg: parseFloat(averagePace.toFixed(2)), peak: parseFloat(maxPace.toFixed(2))},
+        { label: 'Time (mm:ss)', avg: averageTime, peak: maxTime },
+        { label: 'Calories (kcal)', avg: Math.round(averageCalories), peak: Math.round(maxCalories)  },
       ];
 
 

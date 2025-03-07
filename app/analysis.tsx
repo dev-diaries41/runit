@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import ParallaxScrollView from '@/components/ui/common/ParallaxScrollView';
 import { ThemedView } from '@/components/ui/common/ThemedView';
 import { sizes } from '@/constants/layout';
@@ -16,33 +16,33 @@ export default function Screen() {
   const PerformanceSummary = ({performanceSummary}: {performanceSummary:  {
     label: string;
     avg: number;
-    max: number;
+    peak: number;
 }[]} ) => {
     return (
       <View style={styles.metricsContainer}>
       {performanceSummary.map((metric, index) => {
-        const avgPercentage = (metric.avg / metric.max) * 100;
+        const avgPercentage = (metric.avg / metric.peak) * 100;
         const maxPercentage = 100; // Max value is always 100%
         return (
           <View key={index} style={styles.metricItem}>
             <ThemedText style={[styles.metricLabel, { color: textColor }]}>{metric.label}</ThemedText>
             
-            <View style={styles.barContainer}>
+          {metric.peak > 0 &&  <View style={styles.barContainer}>
               <View style={[styles.bar, { width: `${maxPercentage}%`, backgroundColor: tintColor }]} />
               <ThemedText style={[styles.barValue, { left: `${maxPercentage}%`, color: tintColor }]}>
-                {metric.max}
+                {metric.peak}
               </ThemedText>
-            </View>
+            </View>}
 
             <View style={styles.barContainer}>
-              <View style={[styles.bar, { width: `${avgPercentage}%`, backgroundColor: tintColor, opacity: 0.3 }]} />
-              <ThemedText style={[styles.barValue, { left: `${avgPercentage}%`, color: tintColor }]}>
+              <View style={[styles.bar, { width: `${avgPercentage === Infinity? maxPercentage : avgPercentage}%`, backgroundColor: tintColor, opacity: 0.3 }]} />
+              <ThemedText style={[styles.barValue, { left: `${avgPercentage === Infinity? maxPercentage : avgPercentage}%`, color: tintColor }]}>
                 {metric.avg}
               </ThemedText>
             </View>
 
             <View style={styles.barLabels}>
-              <ThemedText style={[styles.metricValue, { color: textColor }]}>Max:  {metric.label.includes('Time')? formatTime(metric.max): metric.max}</ThemedText>
+              {metric.peak > 0 && <ThemedText style={[styles.metricValue, { color: textColor }]}>Peak:  {metric.label.includes('Time')? formatTime(metric.peak): metric.peak}</ThemedText>}
               <ThemedText style={[styles.metricValue, { color: textColor }]}>Average: {metric.label.includes('Time')? formatTime(metric.avg): metric.avg}</ThemedText>
             </View>
           </View>
@@ -60,7 +60,7 @@ export default function Screen() {
         <View style={styles.legendContainer}>
           <View style={styles.legendItem}>
             <View style={[styles.legendSquare, { backgroundColor: tintColor }]} />
-            <ThemedText style={[styles.legendText, { color: textColor }]}>Max</ThemedText>
+            <ThemedText style={[styles.legendText, { color: textColor }]}>Peak</ThemedText>
           </View>
           <View style={styles.legendItem}>
             <View style={[styles.legendSquare, { backgroundColor: tintColor, opacity: 0.3 }]} />

@@ -10,12 +10,14 @@ import { useRouter } from 'expo-router';
 import { useLocation } from '@/hooks/runit/useLocation';
 import { useMetrics } from '@/hooks/runit/useMetrics';
 import { sendNotification } from '@/lib/notifications';
+import { useHomeNavBar } from '@/hooks/useNavBar';
 
 export default function Screen() {
   const { elapsedTime, isRunning, start, stop, reset } = useStopwatch();
   const {distance} = useLocation(isRunning);
   const { runSession, updateRunSession, resetRunSession } = useMetrics(distance, elapsedTime);
   const router = useRouter();
+  useHomeNavBar(distance)
 
   const handleStartRun = async() => {
     if(runSession){
@@ -46,7 +48,6 @@ const handleEndRun = async () => {
   
   return (
     <ParallaxScrollView headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}>
-      {distance > 0 && <ThemedText style={styles.distanceOverview}>Distance: {distance} km</ThemedText>}
       <ThemedView style={styles.container}>
         <ThemedText type='title'>{isRunning? "Run in progress 🏃🏿‍♂️‍➡️" : "Start run"}
         </ThemedText>
@@ -78,11 +79,4 @@ const styles = StyleSheet.create({
     paddingTop: sizes.layout.medium,
     gap: sizes.layout.medium,
   },
-  distanceOverview:{
-    position: 'absolute', 
-    top: 48, 
-    zIndex: 2, 
-    right: 8,
-    fontSize: sizes.font.small
-  }
 });

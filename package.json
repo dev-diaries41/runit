@@ -9,6 +9,7 @@
     "web": "expo start --web",
     "test": "jest --watchAll",
     "lint": "expo lint",
+    "prod": "eas build -p android --profile producton",
     "prev": "eas build -p android --profile preview",
     "dev": "eas build -p android --profile development",
     "list": "eas build:list"

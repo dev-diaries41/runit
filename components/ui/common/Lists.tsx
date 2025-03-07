@@ -36,7 +36,7 @@ export default function List<T extends Record<string, any>>({
             keyExtractor={(item: T, index: number) => index.toString()}
             estimatedItemSize={ITEM_HEIGHT}
             renderItem={renderItem}
-            getItemLayout={(data: any, index: number) => ({
+            overrideItemLayout={(data: any, index: number) => ({
                 length: ITEM_HEIGHT,
                 offset: ITEM_HEIGHT * index,
                 index,

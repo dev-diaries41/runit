@@ -7,6 +7,7 @@ import { Settings, File, NewFile, RunSession } from '@/types';
 import CryptoJS from "react-native-crypto-js";
 import * as Crypto from 'expo-crypto'
 import { DefaultSettings } from '@/constants/globals';
+import * as DocumentPicker from 'expo-document-picker';
 
 // As Expo's SecureStore does not support values larger than 2048
 // bytes, an AES-256 key is generated and stored in SecureStore, while
@@ -189,4 +190,34 @@ export const backup = async() => {
   await saveNewFile({filename: 'notes_backup', content: runHistory, mimetype:'application/json', writingOptions:{
       encoding: FileSystem.EncodingType.UTF8,
   }})
+}
+
+export async function pickDocument(callback: (uri: string) => void): Promise<void> {
+  try {
+    const result = await DocumentPicker.getDocumentAsync({
+      type: 'application/json',
+      copyToCacheDirectory: true, 
+    });
+    if (!result.canceled) {
+      callback(result.assets[0].uri);
+    } 
+  } catch (error) {
+    console.error('Error picking document:', error);
+  }
+}
+
+
+export const importRunitData = async(uri: string): Promise<void>  =>{
+  try {
+    const fileContent = await FileSystem.readAsStringAsync(uri);
+    const runSessions = JSON.parse(fileContent) as RunSession[];
+    const savePromises = runSessions.map(session => AsyncStorage.setItem(session.id, JSON.stringify(session)));
+    await Promise.all(savePromises)
+    await FileSystem.deleteAsync(uri); 
+    console.log('Imported runit data sucessfully');
+
+  } catch (error) {
+    console.error('Error importing runit data:', error);
+    throw new Error('Failed to runit data');
+  }
 }

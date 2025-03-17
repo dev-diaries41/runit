@@ -18,11 +18,9 @@ const LinkSettingsCard = ({
       case 'Weight':
         return 'scale'
       case 'Export':
+        return 'share'
+      case 'Import':
         return 'archive'
-      case 'System prompt':
-        return 'terminal-sharp'
-      case 'Account':
-        return 'person'
     }
   }
 

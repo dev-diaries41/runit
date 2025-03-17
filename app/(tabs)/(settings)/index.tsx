@@ -6,7 +6,7 @@ import { sizes } from '@/constants/layout';
 import SettingsCard from '@/components/ui/common/SettingsCard';
 import LinkSettingsCard from '@/components/ui/common/LinkSettingsCard';
 import { useThemeColor } from '@/hooks/useThemeColor';
-import { backup } from '@/lib/storage';
+import { backup, importRunitData, pickDocument } from '@/lib/storage';
 import { ThemedText } from '@/components/ui/common/ThemedText';
 
 
@@ -23,6 +23,11 @@ const settingsConfig = [
     onPress: backup,
     settingTitle: 'Export',
     settingDescription: 'Export your RunIt data',
+  },
+  {
+    onPress: async() => await pickDocument(importRunitData),
+    settingTitle: 'Import',
+    settingDescription: 'Import your RunIt data',
   },
 ];
 
@@ -48,7 +53,7 @@ const settingsConfig = [
           ))}
         </ThemedView>
         <ThemedView style={styles.appInfoContainer}>
-          <Image source={require('../../../assets/images/runit.png')} style={styles.logo} resizeMode="contain"/>
+          <Image source={require('../../../assets/images/ic_launcher.png')} style={styles.logo} resizeMode="contain"/>
           <ThemedText type='subtitle'  style={{marginBottom: sizes.layout.medium}}>RunIt</ThemedText>
           <ThemedText style={{fontSize: sizes.font.small}}>Version: 1.1.6</ThemedText>
           <ThemedText style={{fontSize: sizes.font.small}}>© 2025 FPF Labs</ThemedText>

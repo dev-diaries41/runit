@@ -187,7 +187,7 @@ export const fetchAsyncStorageBatch = async <T = any>(batchSize: number, filterC
 export const backup = async() => {
   const {retrievedItems} = await fetchAsyncStorageBatch<RunSession>(Infinity, key => key.includes("run"));
   const runHistory = JSON.stringify(retrievedItems);
-  await saveNewFile({filename: 'notes_backup', content: runHistory, mimetype:'application/json', writingOptions:{
+  await saveNewFile({filename: `runit_backup_${Date.now()}`, content: runHistory, mimetype:'application/json', writingOptions:{
       encoding: FileSystem.EncodingType.UTF8,
   }})
 }
@@ -214,10 +214,9 @@ export const importRunitData = async(uri: string): Promise<void>  =>{
     const savePromises = runSessions.map(session => AsyncStorage.setItem(session.id, JSON.stringify(session)));
     await Promise.all(savePromises)
     await FileSystem.deleteAsync(uri); 
-    console.log('Imported runit data sucessfully');
 
   } catch (error) {
     console.error('Error importing runit data:', error);
-    throw new Error('Failed to runit data');
+    alert('Failed to runit data')
   }
 }

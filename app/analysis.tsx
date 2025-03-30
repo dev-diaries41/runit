@@ -21,8 +21,9 @@ export default function Screen() {
     return (
       <View style={styles.metricsContainer}>
       {performanceSummary.map((metric, index) => {
-        const avgPercentage = (metric.avg / metric.peak) * 100;
-        const maxPercentage = 100; // Max value is always 100%
+        const metricRatio = metric.avg / metric.peak
+        const avgPercentage = metricRatio * 100;
+        const maxPercentage = metricRatio>1? (100 / metricRatio):100;
         return (
           <View key={index} style={styles.metricItem}>
             <ThemedText style={[styles.metricLabel, { color: textColor }]}>{metric.label}</ThemedText>

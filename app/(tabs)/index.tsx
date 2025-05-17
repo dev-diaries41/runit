@@ -11,13 +11,28 @@ import { useLocation } from '@/hooks/runit/useLocation';
 import { useMetrics } from '@/hooks/runit/useMetrics';
 import { sendNotification } from '@/lib/notifications';
 import { useHomeNavBar } from '@/hooks/useNavBar';
+import { useEffect, useState } from 'react';
+import BottomSheet from '@/components/ui/modals/BottomSheet';
+import InputField from '@/components/ui/common/InputField';
+import { useThemeColor } from '@/hooks/useThemeColor';
 
 export default function Screen() {
   const { elapsedTime, isRunning, start, stop, reset } = useStopwatch();
   const {distance} = useLocation(isRunning);
   const { runSession, updateRunSession, resetRunSession } = useMetrics(distance, elapsedTime);
+  const [isSettingGoal, setIsSettingGoal] = useState(false)
+  const [goal, setGoal] = useState<string>("")
+  const cardColor = useThemeColor({}, 'card')
+
   const router = useRouter();
   useHomeNavBar(distance)
+
+  useEffect(() => {
+    const parsedGoal = parseFloat(goal)
+    if(!isNaN(parsedGoal) && distance >= parsedGoal){
+      onGoalReached()
+    }
+  }, [goal, distance])
 
   const handleStartRun = async() => {
     if(runSession){
@@ -28,29 +43,53 @@ export default function Screen() {
   }
 
 
-const handleStopRun = async () => {
-  await stop();
-  updateRunSession();
-  sendNotification('Run stopped', `You stopped your run at ${new Date().toLocaleTimeString()}`)
-};
+  const handleStopRun = async () => {
+    await stop();
+    updateRunSession();
+    sendNotification('Run stopped', `You stopped your run at ${new Date().toLocaleTimeString()}`)
+  };
 
-const handleReset = async () => {
-  await reset();
-  resetRunSession();
-};
+  const handleReset = async () => {
+    await reset();
+    resetRunSession();
+  };
 
-const handleEndRun = async () => {
-  router.push({pathname: '/metrics', params: {...runSession}}) 
-  setTimeout(() => handleReset(), 1000);
-};
+  const handleEndRun = async () => {
+    router.push({pathname: '/metrics', params: {...runSession}}) 
+    setTimeout(() => handleReset(), 1000);
+  };
 
+  const toggleGoalSetter = () => {
+    setIsSettingGoal(prev => !prev)
+  }
+
+  const updateGoal = (distance: string) => {
+    setGoal(distance)
+  }
+
+  const onGoalReached = async() => {
+      await handleStopRun()
+      setTimeout(handleEndRun, 1000)
+  }
 
   
   return (
     <ParallaxScrollView headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}>
+      <ThemedView style={styles.runSummaryRow}>
+        <Button
+          disabled={isRunning}
+          fontSize={sizes.font.small}
+          style={{alignSelf: 'flex-start', paddingHorizontal: 16}}
+          onPress={toggleGoalSetter} 
+          text='Set goal'/>
+
+          <ThemedView style={{}}>
+              <ThemedText style={{fontSize: sizes.font.small, fontWeight:"bold"}}>📏 Distance: {distance} km</ThemedText>
+              {goal && <ThemedText style={{fontSize: sizes.font.small, fontWeight:"bold"}}>🎯 Goal: {goal} km</ThemedText>}
+          </ThemedView>
+      </ThemedView>
       <ThemedView style={styles.container}>
-        <ThemedText type='title'>{isRunning? "Run in progress 🏃🏿‍♂️‍➡️" : "Start run"}
-        </ThemedText>
+        <ThemedText type='title'>{isRunning? "Run in progress 🏃🏿‍♂️‍➡️" : "Start run"}</ThemedText>
         <Stopwatch
           elapsedTime={elapsedTime}
           isRunning={isRunning}
@@ -67,9 +106,25 @@ const handleEndRun = async () => {
           text='End run'/>
       )}
       </ThemedView>
+      <BottomSheet
+        style={{minHeight: 200, backgroundColor:cardColor}}
+        visible={isSettingGoal}
+        onClose={toggleGoalSetter}
+        title='Set goal 🎯'
+        >
+       <InputField
+          style={{marginTop: sizes.layout.small}}
+          keyboardType='numeric'
+          onChangeText={updateGoal}
+          value={goal}
+          placeholder='Enter target distance in km e.g 5'
+          />
+      </BottomSheet>
     </ParallaxScrollView>
   );
 }
+
+
 
 const styles = StyleSheet.create({
   container: {
@@ -79,4 +134,10 @@ const styles = StyleSheet.create({
     paddingTop: sizes.layout.medium,
     gap: sizes.layout.medium,
   },
+
+  runSummaryRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: sizes.layout.xLarge
+  }
 });

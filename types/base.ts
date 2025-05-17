@@ -57,7 +57,7 @@ export interface BottomSheetProps {
     description?: string; 
     title: string;
     children?: ReactNode;
-    color : string;
+    color? : string;
     loading?: boolean;
     style?: StyleProp<ViewStyle>
 }

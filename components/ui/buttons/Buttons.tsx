@@ -116,7 +116,6 @@ import { Colors } from '@/constants/colors';
       alignItems: 'center',
       justifyContent: 'center',
       alignSelf: "center",
-      marginHorizontal: sizes.layout.small,
       elevation: 2,
       shadowColor: themes.light.text,
       shadowOffset: {width: 5, height: 10},

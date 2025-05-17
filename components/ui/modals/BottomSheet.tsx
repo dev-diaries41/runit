@@ -18,6 +18,7 @@ const BottomSheet = ({
   ...otherProps
 }: BottomSheetProps) => {
   const iconColor = useThemeColor({}, 'icon');
+  const textColor = useThemeColor({}, 'text');
   const panY = useRef(new Animated.Value(0)).current; // Start the modal off-screen
   const panResponder = useRef(
     PanResponder.create({
@@ -69,7 +70,7 @@ const BottomSheet = ({
 
         <View style={[styles.modalContent, style]}>
           <View style={styles.header}>
-            <Text style={[styles.title, {color}]} numberOfLines={2}>{title}</Text>
+            <Text style={[styles.title, {color: color || textColor}]} numberOfLines={2}>{title}</Text>
             <IconButton icon={"close-circle"} onPress={onClose} color={iconColor} opacity={0.5}/>
           </View>
           <View style={[styles.mainContent]}>

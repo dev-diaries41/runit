@@ -29,10 +29,13 @@ export default function Screen() {
 
   useEffect(() => {
     const parsedGoal = parseFloat(goal)
-    if(!isNaN(parsedGoal) && distance >= parsedGoal){
-      onGoalReached()
+    if(!isNaN(parsedGoal) && (distance >= parsedGoal) && elapsedTime > 0){
+      handleStopRun()
+      if(runSession){
+        handleEndRun()      
+      }
     }
-  }, [goal, distance])
+  }, [goal, distance, elapsedTime, runSession?.id])
 
   const handleStartRun = async() => {
     if(runSession){
@@ -52,6 +55,7 @@ export default function Screen() {
   const handleReset = async () => {
     await reset();
     resetRunSession();
+    setGoal("")
   };
 
   const handleEndRun = async () => {
@@ -65,11 +69,6 @@ export default function Screen() {
 
   const updateGoal = (distance: string) => {
     setGoal(distance)
-  }
-
-  const onGoalReached = async() => {
-      await handleStopRun()
-      setTimeout(handleEndRun, 1000)
   }
 
   

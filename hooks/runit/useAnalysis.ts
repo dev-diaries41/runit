@@ -20,7 +20,7 @@ export function useAnalysis() {
     ];
   
     // Calculate dynamic maxLabels based on device width.
-    const estimatedLabelWidth = 40; 
+    const estimatedLabelWidth = 50; 
     const maxLabels = Math.max(Math.floor(width / estimatedLabelWidth), 5); // ensure at least 5 labels are displayed
     const step = Math.ceil(labels.length / maxLabels);
   

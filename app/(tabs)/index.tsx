@@ -10,7 +10,6 @@ import { useRouter } from 'expo-router';
 import { useLocation } from '@/hooks/runit/useLocation';
 import { useMetrics } from '@/hooks/runit/useMetrics';
 import { sendNotification } from '@/lib/notifications';
-import { useHomeNavBar } from '@/hooks/useNavBar';
 import { useEffect, useState } from 'react';
 import BottomSheet from '@/components/ui/modals/BottomSheet';
 import InputField from '@/components/ui/common/InputField';
@@ -25,7 +24,6 @@ export default function Screen() {
   const cardColor = useThemeColor({}, 'card')
 
   const router = useRouter();
-  useHomeNavBar(distance)
 
   useEffect(() => {
     const parsedGoal = parseFloat(goal)
@@ -44,7 +42,6 @@ export default function Screen() {
     sendNotification('Run in progress', `You started your run at ${new Date().toLocaleTimeString()}`)
     await start()
   }
-
 
   const handleStopRun = async () => {
     await stop();
